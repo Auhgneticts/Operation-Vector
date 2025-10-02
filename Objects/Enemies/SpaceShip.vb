@@ -14,7 +14,7 @@
         grow += 0.4
         tStop = DateAndTime.Now
         Dim tSpan As TimeSpan = tStop - tStart
-        If tSpan.Milliseconds > TimeFastExplosion Then
+        If tSpan.Milliseconds > TimeFastExplosionMicro Then
             explode = False
             isAlive = False
             tStart = Nothing

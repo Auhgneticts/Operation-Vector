@@ -4,7 +4,7 @@
         With tempRod
             .name = "Big Slow Rod"
             .length = 6
-            .scale = gScale
+            .scale = globalScale
             .Size = New SizeF(4, 0)
             .ySpeed = -5
             .isAlive = True
@@ -17,7 +17,7 @@
         With tempRod
             .name = "Big Fast Rod"
             .length = 6
-            .scale = gScale
+            .scale = globalScale
             .Size = New SizeF(4, 0)
             .ySpeed = -10
             .isAlive = True
@@ -30,7 +30,7 @@
         With tempRod
             .name = "Small Slow Rod"
             .length = 3
-            .scale = gScale
+            .scale = globalScale
             .Size = New SizeF(2, 0)
             .ySpeed = -5
             .isAlive = True
@@ -43,7 +43,7 @@
         With tempRod
             .name = "Small Fast Rod"
             .length = 3
-            .scale = gScale
+            .scale = globalScale
             .Size = New SizeF(2, 0)
             .ySpeed = -10
             .isAlive = True

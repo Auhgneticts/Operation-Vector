@@ -24,7 +24,7 @@
     End Property
     ReadOnly Property OffsetLocation As PointF
         Get
-            Return New PointF(rectangleValueF.X + (offsetValue.X * scale * gScale), rectangleValueF.Y + (offsetValue.Y * scale * gScale))
+            Return New PointF(rectangleValueF.X + (offsetValue.X * scale * globalScale), rectangleValueF.Y + (offsetValue.Y * scale * globalScale))
         End Get
     End Property
     WriteOnly Property Offset As PointF
@@ -39,7 +39,7 @@
     End Property
     Property Size As SizeF
         Get
-            Return rectangleValueF.Size * scale * gScale
+            Return rectangleValueF.Size * scale * globalScale
         End Get
         Set(value As SizeF)
             rectangleValueF.Size = value

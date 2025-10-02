@@ -6,7 +6,6 @@
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Hide()
-        BackColor = Color.Black
         LoadData()
         LoadBitmaps()
         LoadPlayer()
@@ -19,12 +18,12 @@
             Case Keys.Space
                 ' create Ammo Selector
                 If player.ammoList.Count = 0 Then Exit Sub
-                shotAmmo = player.ammoList.Last
+                player.currentShot = player.ammoList.Last
                 player.ammoList.Remove(player.ammoList.Last)
                 'add ammo offsets
-                shotAmmo.Location = player.OffsetLocation
-                player.shotList.Add(shotAmmo)
-                shotAmmo = Nothing
+                player.currentShot.Location = player.OffsetLocation
+                player.shotList.Add(player.currentShot)
+                player.currentShot = Nothing
                 Exit Sub
             Case Keys.Left
                 player.leftSpeed = player.xSpeed * -1
@@ -76,11 +75,12 @@
                 shot.DrawImage(e.Graphics)
             Next
         End If
-        e.Graphics.DrawString("Shots " + player.shotList.Count.ToString, SystemFonts.DialogFont, Brushes.White, New Point(0, 0))
+        e.Graphics.DrawString(DataPolling.AmmoAmount, SystemFonts.DialogFont, Brushes.White, New Point(0, 0))
         e.Graphics.DrawString("Enemies " + enemyList.Count.ToString, SystemFonts.DialogFont, Brushes.White, New Point(0, 10))
 
         e.Graphics.DrawString(qTime.Microseconds.ToString, fontScore, Brushes.LightYellow, New PointF(0, 30))
-        e.Graphics.DrawString("Score " + score.ToString, fontScore, Brushes.LightYellow, New PointF(0, 60))
+        e.Graphics.DrawString("Score " + Score.ToString, fontScore, Brushes.LightYellow, New PointF(0, 60))
+
     End Sub
     Private Sub TimerDraw_Tick(sender As Object, e As EventArgs) Handles TimerDraw.Tick
         Me.Invalidate()
@@ -98,7 +98,7 @@
                         'FIND FAST USE OF ITTERATOR
                         'As itterator
                         If playerShot.Rectangle.IntersectsWith(enemy.Rectangle) Then
-                            score += enemy.baseScore * enemy.scoreMulti
+                            DataPolling.Score += enemy.baseScore * enemy.scoreMulti
                             enemy.explode = True
                         End If
                         If playerShot.X > Box.Right Then
@@ -116,7 +116,7 @@
                     Exit Sub
                 End If
                 If enemy.X < Box.Left + enemy.Size.Width Then
-                    score -= enemy.baseScore * enemy.scoreMulti
+                    DataPolling.Score -= enemy.baseScore * enemy.scoreMulti
                     enemy.isAlive = False
                 End If
             Next
@@ -157,4 +157,5 @@
         tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBigShooter, RandomInteger(6))
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
+
 End Class

@@ -9,9 +9,8 @@
         Dim Height As Integer
     End Structure
     Private dataPath As String = ""
-    Friend Const TimeFastExplosion = 75
-    Friend score As Integer
-    Friend gScale As Integer
+    Friend Const TimeFastExplosionMicro = 75
+    Friend globalScale As Integer
     Friend Box As Area
     Friend player As New PlayerShip
     Friend objectFactory As New PickupsFactory
@@ -21,7 +20,6 @@
     Friend ammoBullets As New List(Of AmmoBullet)
     Friend ammoRods As New List(Of AmmoRod)
     Friend gameBitmaps As New SortedList(Of String, Bitmap)
-    Friend shotAmmo As Ammo
     Friend fontScore As New Font(FontFamily.GenericMonospace, 14)
     Public Sub StartGame()
         With Form1
@@ -51,7 +49,9 @@
     End Sub
     Public Sub LoadPlayer()
         Dim tempAmmoList As List(Of Ammo)
+        Dim temptwoAmmoList As List(Of Ammo)
         tempAmmoList = GetBulletList(AmmoFactory.AmmoType.BulletBigFast, 100)
+        temptwoAmmoList = GetBulletList(AmmoFactory.AmmoType.BulletSmallFast, 50)
         With player
             .ammoList.AddRange(tempAmmoList.AsEnumerable)
             .name = "David"
@@ -65,14 +65,16 @@
             .xSpeedMax = 30
             .ySpeedMax = 24
         End With
+        ''' Testing '''
+        player.AddAmmo(temptwoAmmoList)
     End Sub
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
-        gScale = 1
+        globalScale = 1
         Box.Right = Form1.Right
         Box.Left = Form1.Left
         Box.Top = Form1.Top
-        Box.Bottom = Form1.Bottom
+        Box.Bottom = Form1.Bottom - 100
         Box.Width = Form1.Width
         Box.Height = Form1.Height
     End Sub

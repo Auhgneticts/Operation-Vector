@@ -55,6 +55,7 @@ Partial Class Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
+        AutoSize = True
         BackColor = Color.DimGray
         ClientSize = New Size(990, 526)
         DoubleBuffered = True
