@@ -66,7 +66,7 @@
             .ySpeedMax = 24
         End With
         ''' Testing '''
-        player.AddAmmo(temptwoAmmoList)
+
     End Sub
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"

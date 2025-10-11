@@ -2,18 +2,20 @@
     Inherits Ship
     'MAKE PLAYER SHIP CLASS
     '  Don't remeber what I meant here
-    Private ammoLargeBullet As New List(Of Ammo)
-    Private ammoSmallBullet As New List(Of Ammo)
-    Private ammoRod As New List(Of Ammo)
+    Private ammoLargeBullet As New List(Of AmmoBullet)
+    Private ammoSmallBullet As New List(Of AmmoBullet)
+    Private ammoRodList As New List(Of AmmoRod)
 
-
-    Public Sub AddAmmo(AddedAmmoList As List(Of Ammo))
+    Public Sub SwitchAmmo(NewAmmoList As List(Of Ammo))
         Dim oldAmmoList As List(Of Ammo)
         oldAmmoList = Me.ammoList
-        Me.ammoList = Nothing
-        Me.ammoList = AddedAmmoList
-        AddedAmmoList = Nothing
-        'Update count ??
+        Me.ammoList.Clear()
+        Me.ammoList.AddRange(NewAmmoList.AsEnumerable)
+        NewAmmoList = Nothing
+    End Sub
+    Public Sub AddAmmo()
+        'modify ammolist of that type
+
     End Sub
     Public Overrides Sub Move()
         X += leftSpeed

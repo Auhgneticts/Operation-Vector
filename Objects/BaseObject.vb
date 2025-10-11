@@ -1,5 +1,6 @@
 ﻿Public Class BaseObject
     Private rectangleValueF As RectangleF
+    Private frameRects As List(Of RectangleF)
     Private offsetValue As PointF
     Friend weight As Integer
     Friend health As Integer

@@ -75,7 +75,7 @@
                 shot.DrawImage(e.Graphics)
             Next
         End If
-        e.Graphics.DrawString(DataPolling.AmmoAmount, SystemFonts.DialogFont, Brushes.White, New Point(0, 0))
+        e.Graphics.DrawString(player.GetAmmoAmount, SystemFonts.DialogFont, Brushes.White, New Point(0, 0))
         e.Graphics.DrawString("Enemies " + enemyList.Count.ToString, SystemFonts.DialogFont, Brushes.White, New Point(0, 10))
 
         e.Graphics.DrawString(qTime.Microseconds.ToString, fontScore, Brushes.LightYellow, New PointF(0, 30))
@@ -98,7 +98,7 @@
                         'FIND FAST USE OF ITTERATOR
                         'As itterator
                         If playerShot.Rectangle.IntersectsWith(enemy.Rectangle) Then
-                            DataPolling.Score += enemy.baseScore * enemy.scoreMulti
+                            Score += enemy.baseScore * enemy.scoreMulti
                             enemy.explode = True
                         End If
                         If playerShot.X > Box.Right Then
@@ -116,7 +116,7 @@
                     Exit Sub
                 End If
                 If enemy.X < Box.Left + enemy.Size.Width Then
-                    DataPolling.Score -= enemy.baseScore * enemy.scoreMulti
+                    Score -= enemy.baseScore * enemy.scoreMulti
                     enemy.isAlive = False
                 End If
             Next
