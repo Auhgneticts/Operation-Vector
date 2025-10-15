@@ -78,7 +78,8 @@
         e.Graphics.DrawString(player.GetAmmoAmount, SystemFonts.DialogFont, Brushes.White, New Point(0, 0))
         e.Graphics.DrawString("Enemies " + enemyList.Count.ToString, SystemFonts.DialogFont, Brushes.White, New Point(0, 10))
 
-        e.Graphics.DrawString(qTime.Microseconds.ToString, fontScore, Brushes.LightYellow, New PointF(0, 30))
+        e.Graphics.DrawString("Microseconds processing game", SystemFonts.DialogFont, Brushes.LightYellow, New PointF(0, 20))
+        e.Graphics.DrawString(qTime.Microseconds.ToString, SystemFonts.DialogFont, Brushes.LightYellow, New PointF(0, 30))
         e.Graphics.DrawString("Score " + Score.ToString, fontScore, Brushes.LightYellow, New PointF(0, 60))
 
     End Sub

@@ -74,7 +74,7 @@
         Box.Right = Form1.Right
         Box.Left = Form1.Left
         Box.Top = Form1.Top
-        Box.Bottom = Form1.Bottom - 100
+        Box.Bottom = Form1.Bottom - (0.08 * Form1.Height)
         Box.Width = Form1.Width
         Box.Height = Form1.Height
     End Sub

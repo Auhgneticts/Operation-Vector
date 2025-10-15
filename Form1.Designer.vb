@@ -28,6 +28,7 @@ Partial Class Form1
         TimerMove = New Timer(components)
         TimerSpaceShipDir = New Timer(components)
         TimerEnemySpawn = New Timer(components)
+        Label1 = New Label()
         SuspendLayout()
         ' 
         ' TimerDraw
@@ -51,13 +52,24 @@ Partial Class Form1
         ' 
         TimerEnemySpawn.Interval = 3000
         ' 
+        ' Label1
+        ' 
+        Label1.AutoSize = True
+        Label1.Dock = DockStyle.Bottom
+        Label1.Location = New Point(0, 461)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(88, 60)
+        Label1.TabIndex = 0
+        Label1.Text = "HUD area" & vbCrLf & "ESC = quit" & vbCrLf & "Arrows = move" & vbCrLf & "Space = Fire"
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = Color.DimGray
-        ClientSize = New Size(990, 526)
+        ClientSize = New Size(990, 521)
+        Controls.Add(Label1)
         DoubleBuffered = True
         FormBorderStyle = FormBorderStyle.None
         KeyPreview = True
@@ -69,6 +81,7 @@ Partial Class Form1
         Text = "SpaceMech"
         WindowState = FormWindowState.Maximized
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents TimerDraw As Timer
@@ -76,5 +89,6 @@ Partial Class Form1
     Friend WithEvents TimerMove As Timer
     Friend WithEvents TimerSpaceShipDir As Timer
     Friend WithEvents TimerEnemySpawn As Timer
+    Friend WithEvents Label1 As Label
 
 End Class
