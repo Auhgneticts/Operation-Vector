@@ -27,6 +27,10 @@
                 Return MakeRod.GetSmall
             Case AmmoType.RodBig
                 Return MakeRod.GetBig
+            Case AmmoType.RodSmallFast
+                Return MakeRod.GetSmallFast
+            Case AmmoType.RodSmallSlow
+                Return MakeRod.GetSmallSlow
             Case Else
                 Return Nothing
         End Select

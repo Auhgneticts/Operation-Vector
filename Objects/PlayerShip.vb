@@ -72,6 +72,8 @@
         g.DrawImage(gameBitmaps(image), Rectangle)
     End Sub
     Sub New()
-
+        ammoBulletList = ammoList.AsEnumerable
+        allAmmo.Add(AmmoFactory.AmmoType.Bullet, ammoBulletList)
+        'allAmmo.Add(SelectedAmmo.Rod, ammoRodList.AsEnumerable)
     End Sub
 End Class

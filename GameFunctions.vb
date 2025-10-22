@@ -40,7 +40,7 @@
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBigShooter, 5)
+        tempEnemyList = GetEnemyList(enemyFactory.EnemyType.SpaceShipBigShooter, 5)
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
     Public Sub LoadBitmaps()
@@ -58,14 +58,14 @@
             .ySpeed = 6
             .xSpeedMax = 30
             .ySpeedMax = 24
-            .ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
-            .ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 99)
-            .allAmmo.Add(AmmoFactory.AmmoType.Bullet, .ammoBulletList)
-            .allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
+            .ammoRodList = GetAmmoList(ammoFactory.AmmoType.Rod, 75)
+            .ammoBulletList = GetAmmoList(ammoFactory.AmmoType.Bullet, 99)
+            .allAmmo.Add(ammoFactory.AmmoType.Bullet, .ammoBulletList)
+            .allAmmo.Add(ammoFactory.AmmoType.Rod, .ammoRodList)
         End With
-        'compile ammo into list
+        ''' Testing '''
+
     End Sub
-    Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
         globalScale = 1
         Box.Right = Form1.Right
