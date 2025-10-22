@@ -107,9 +107,8 @@
                 If enemy.Rectangle.IntersectsWith(player.Rectangle) Then
                     ' Do Damage
                     enemy.explode = True
-                    If MsgBox("YOU DIED", MsgBoxStyle.Critical, "You hit a " + enemy.name) = MsgBoxResult.Ok Then
-                        End
-                    End If
+                    'player.explode
+                    EndGame(enemy)
                     Exit Sub
                 End If
                 If enemy.X < Box.Left + enemy.Size.Width Then

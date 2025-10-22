@@ -29,6 +29,17 @@
             .TimerEnemySpawn.Start()
         End With
     End Sub
+    Public Sub EndGame(enemy As EnemyShip)
+        With Form1
+            .TimerSpaceShipDir.Stop()
+            .TimerEnemySpawn.Stop()
+            .TimerMove.Stop()
+            .TimerCheck.Stop()
+        End With
+        If MsgBox("YOU DIED", MsgBoxStyle.Critical, "You hit a " + enemy.name) = MsgBoxResult.Ok Then
+            End
+        End If
+    End Sub
     Public Sub SetupTimers()
         With Form1
             .TimerDraw.Interval = 15
@@ -40,9 +51,10 @@
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(enemyFactory.EnemyType.SpaceShipBigShooter, 5)
+        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBigShooter, 5)
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
+
     Public Sub LoadBitmaps()
         gameBitmaps = ImageLoader.Load()
     End Sub
@@ -58,14 +70,15 @@
             .ySpeed = 6
             .xSpeedMax = 30
             .ySpeedMax = 24
-            .ammoRodList = GetAmmoList(ammoFactory.AmmoType.Rod, 75)
-            .ammoBulletList = GetAmmoList(ammoFactory.AmmoType.Bullet, 99)
-            .allAmmo.Add(ammoFactory.AmmoType.Bullet, .ammoBulletList)
-            .allAmmo.Add(ammoFactory.AmmoType.Rod, .ammoRodList)
+            .ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
+            .ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 99)
+            .allAmmo.Add(AmmoFactory.AmmoType.Bullet, .ammoBulletList)
+            .allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
         End With
         ''' Testing '''
 
     End Sub
+    Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
         globalScale = 1
         Box.Right = Form1.Right

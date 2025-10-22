@@ -25,8 +25,7 @@
         selectedAmmo = newAmmo
     End Sub
     Public Sub Shoot()
-        'TODO figure out when to check ammo lists
-        ' and when to report no ammo
+        'If not allAmmo = 0
         Select Case selectedAmmo
             Case AmmoFactory.AmmoType.Bullet
                 currentShot = ammoBulletList.Last
@@ -43,12 +42,6 @@
                 currentShot = Nothing
 
         End Select
-
-        ''MOVE THIS
-        If ammoList.Count = 0 Then
-            'alert NO Ammo
-            Exit Sub
-        End If
     End Sub
     Public Sub Left()
         leftSpeed = xSpeed * -1
@@ -72,8 +65,5 @@
         g.DrawImage(gameBitmaps(image), Rectangle)
     End Sub
     Sub New()
-        ammoBulletList = ammoList.AsEnumerable
-        allAmmo.Add(AmmoFactory.AmmoType.Bullet, ammoBulletList)
-        'allAmmo.Add(SelectedAmmo.Rod, ammoRodList.AsEnumerable)
     End Sub
 End Class

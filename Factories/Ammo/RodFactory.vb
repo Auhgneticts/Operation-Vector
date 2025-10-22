@@ -25,17 +25,4 @@
         End With
         Return tempRod
     End Function
-    Public Function GetSmallSlow() As AmmoRod
-        Dim tempRod As New AmmoRod
-        With tempRod
-            .name = "Small Slow Rod"
-            .length = 3
-            .scale = globalScale
-            .Size = New SizeF(2, 0)
-            .ySpeed = -5
-            .isAlive = True
-            .pen = New Pen(Brushes.LightGoldenrodYellow, 2)
-        End With
-        Return tempRod
-    End Function
 End Class
