@@ -21,10 +21,6 @@
                 Return Nothing
         End Select
     End Function
-    ''' <summary>
     ''' Only ship making and geting here
     ''' Multi and list making..LOADING  goes into GameFunctions
-    ''' </summary>
-    ''' <returns></returns>
-
 End Class

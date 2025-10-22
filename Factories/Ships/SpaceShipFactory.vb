@@ -2,7 +2,7 @@
     Public Function GetBigShooter() As EnemyShip
         Dim tempEnemy As New SpaceShip
         With tempEnemy
-            .ammoList = GetBulletList(AmmoFactory.AmmoType.BulletBigFast, 20)
+            .ammoList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 20)
             .imageName = "saucerSmall"
             .scale = 2
             .Size = gameBitmaps(.imageName).Size
@@ -26,7 +26,7 @@
     Public Function GetSmallShooter() As EnemyShip
         Dim tempEnemy As New SpaceShip
         With tempEnemy
-            .ammoList = GetBulletList(AmmoFactory.AmmoType.BulletSmallSlow, 10)
+            .ammoList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 10)
             .scale = 1
             .Size = gameBitmaps("saucerSmall").Size
             .shooter = True

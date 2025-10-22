@@ -1,44 +1,34 @@
 ﻿Public Class AmmoFactory
     Enum AmmoType As Short
-        BulletBigSlow
-        BulletBigFast
-        BulletSmallSlow
-        BulletSmallFast
-        RodBigSlow
-        RodBigFast
-        RodSmallSlow
-        RodSmallFast
+        Bullet
+        BulletBig
+        Rod
+        RodBig
+        LaserRed
+        LaserGreen
+        LaserBlue
     End Enum
 
     Private ReadOnly MakeBullet As New BulletFactory
-    Private ReadOnly MakeRod As RodFactory
+    Private ReadOnly MakeRod As New RodFactory
     Public Function GetBullet(Type As AmmoType) As AmmoBullet
         Select Case Type
-            Case AmmoType.BulletBigSlow
-                Return MakeBullet.GetBigSlow()
-            Case AmmoType.BulletBigFast
-                Return MakeBullet.GetBigFast()
-            Case AmmoType.BulletSmallSlow
-                Return MakeBullet.GetSmallSlow
-            Case AmmoType.BulletSmallFast
-                Return MakeBullet.GetSmallFast
+            Case AmmoType.Bullet
+                Return MakeBullet.GetSmall()
+            Case AmmoType.BulletBig
+                Return MakeBullet.GetBig()
             Case Else
                 Return Nothing
         End Select
     End Function
     Public Function GetRod(Type As AmmoType) As AmmoRod
         Select Case Type
-            Case AmmoType.RodBigFast
-                Return MakeRod.GetBigFast
-            Case AmmoType.RodBigSlow
-                Return MakeRod.GetBigSlow
-            Case AmmoType.RodSmallFast
-                Return MakeRod.GetSmallFast
-            Case AmmoType.RodSmallSlow
-                Return MakeRod.GetSmallSlow
+            Case AmmoType.Rod
+                Return MakeRod.GetSmall
+            Case AmmoType.RodBig
+                Return MakeRod.GetBig
             Case Else
                 Return Nothing
         End Select
     End Function
-
 End Class

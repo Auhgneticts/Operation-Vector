@@ -1,4 +1,5 @@
 ﻿Module GameFunctions
+
     Structure Area
         'form1.left is slow
         Dim Left As Integer
@@ -17,8 +18,6 @@
     Friend enemyFactory As New EnemyFactory
     Friend ammoFactory As New AmmoFactory
     Friend enemyList As New List(Of EnemyShip)
-    Friend ammoBullets As New List(Of AmmoBullet)
-    Friend ammoRods As New List(Of AmmoRod)
     Friend gameBitmaps As New SortedList(Of String, Bitmap)
     Friend fontScore As New Font(FontFamily.GenericMonospace, 14)
     Public Sub StartGame()
@@ -48,12 +47,7 @@
         gameBitmaps = ImageLoader.Load()
     End Sub
     Public Sub LoadPlayer()
-        Dim tempAmmoList As List(Of Ammo)
-        Dim temptwoAmmoList As List(Of Ammo)
-        tempAmmoList = GetBulletList(AmmoFactory.AmmoType.BulletBigFast, 100)
-        temptwoAmmoList = GetBulletList(AmmoFactory.AmmoType.BulletSmallFast, 50)
         With player
-            .ammoList.AddRange(tempAmmoList.AsEnumerable)
             .name = "David"
             .scale = 2
             .Size = gameBitmaps("heli").Size
@@ -64,9 +58,12 @@
             .ySpeed = 6
             .xSpeedMax = 30
             .ySpeedMax = 24
+            .ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
+            .ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 99)
+            .allAmmo.Add(AmmoFactory.AmmoType.Bullet, .ammoBulletList)
+            .allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
         End With
-        ''' Testing '''
-
+        'compile ammo into list
     End Sub
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
@@ -113,11 +110,28 @@
         Next
         Return tempEnemyList
     End Function
-    Public Function GetBulletList(type As AmmoFactory.AmmoType, Number As Integer)
-        Dim Bullets As New List(Of Ammo)
-        For I As Integer = 0 To Number
-            Bullets.Add(ammoFactory.GetBullet(type))
-        Next
-        Return Bullets
+    Public Function GetAmmoList(type As AmmoFactory.AmmoType, Number As Integer)
+        Dim tempAmmoList As New List(Of Ammo)
+        'Bullets
+        If type < 2 Then
+            For I As UShort = 1 To Number
+                tempAmmoList.Add(ammoFactory.GetBullet(type))
+            Next
+        End If
+        'Rods
+        If type > 1 And type < 4 Then
+            For I As UShort = 1 To Number
+                tempAmmoList.Add(ammoFactory.GetRod(type))
+            Next
+        End If
+        'Lasers
+        If type > 3 Then
+            For I As UShort = 1 To Number
+                'tempAmmoList.Add(ammoFactory.GetLaser(type))
+            Next
+        End If
+        Return tempAmmoList
+
+        tempAmmoList = Nothing
     End Function
 End Module

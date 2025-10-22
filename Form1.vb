@@ -16,25 +16,19 @@
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
         Select Case e.KeyValue
             Case Keys.Space
-                ' create Ammo Selector
-                If player.ammoList.Count = 0 Then Exit Sub
-                player.currentShot = player.ammoList.Last
-                player.ammoList.Remove(player.ammoList.Last)
-                'add ammo offsets
-                player.currentShot.Location = player.OffsetLocation
-                player.shotList.Add(player.currentShot)
-                player.currentShot = Nothing
-                Exit Sub
+                player.Shoot()
             Case Keys.Left
-                player.leftSpeed = player.xSpeed * -1
+                player.Left()
             Case Keys.Right
-                player.rightSpeed = player.xSpeed
+                player.Right()
             Case Keys.Up
-                player.upSpeed = player.ySpeed * -1
+                player.Up()
             Case Keys.Down
-                player.downSpeed = player.ySpeed
+                player.Down()
             Case Keys.Escape
                 End
+            Case Keys.S
+                TimerMove.Stop()
         End Select
     End Sub
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
@@ -47,6 +41,8 @@
                 player.upSpeed = 0
             Case Keys.Down
                 player.downSpeed = 0
+            Case Keys.S
+                TimerMove.Start()
         End Select
     End Sub
     Private Sub Form1_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
