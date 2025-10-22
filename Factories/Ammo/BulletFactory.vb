@@ -1,15 +1,11 @@
 ﻿
 Class BulletFactory
-    Public Function GetBigSlow() As AmmoBullet
-        Throw New NotImplementedException()
-    End Function
 
-    Public Function GetBigFast() As AmmoBullet
+    Public Function GetBig() As AmmoBullet
         Dim tempBullet As New AmmoBullet
         With tempBullet
-            .name = "Big Fast Bullet"
+            .name = "Big Bullet"
             .isAlive = False
-            .pen = Pens.Red
             .scale = 2
             .xSpeed = 10
             .Size = gameBitmaps("bullet").Size
@@ -17,18 +13,12 @@ Class BulletFactory
         Return tempBullet
         tempBullet = Nothing
     End Function
-
-    Public Function GetSmallSlow() As AmmoBullet
-        Throw New NotImplementedException()
-    End Function
-
-    Public Function GetSmallFast() As AmmoBullet
+    Public Function GetSmall() As AmmoBullet
         Dim tempBullet As New AmmoBullet
         With tempBullet
-            .name = "Small Fast Bullet"
+            .name = "Small Bullet"
             .isAlive = False
-            .pen = Pens.Red
-            .scale = 2
+            .scale = 1
             .xSpeed = 10
             .Size = gameBitmaps("bullet").Size
         End With

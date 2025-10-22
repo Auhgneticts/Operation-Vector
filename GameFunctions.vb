@@ -1,4 +1,5 @@
 ﻿Module GameFunctions
+
     Structure Area
         'form1.left is slow
         Dim Left As Integer
@@ -49,9 +50,8 @@
     End Sub
     Public Sub LoadPlayer()
         Dim tempAmmoList As List(Of Ammo)
-        Dim temptwoAmmoList As List(Of Ammo)
-        tempAmmoList = GetBulletList(AmmoFactory.AmmoType.BulletBigFast, 100)
-        temptwoAmmoList = GetBulletList(AmmoFactory.AmmoType.BulletSmallFast, 50)
+        tempAmmoList = GetBulletList(AmmoFactory.AmmoType.BulletBig, 100)
+
         With player
             .ammoList.AddRange(tempAmmoList.AsEnumerable)
             .name = "David"
@@ -65,8 +65,9 @@
             .xSpeedMax = 30
             .ySpeedMax = 24
         End With
-        ''' Testing '''
+        'compile ammo into list
 
+        tempAmmoList = Nothing
     End Sub
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"

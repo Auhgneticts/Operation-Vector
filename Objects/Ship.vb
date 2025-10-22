@@ -37,7 +37,6 @@
             'explode
             explode = True
             Me.isAlive = False
-
         Else
             Me.health = Me.health - amount
         End If
