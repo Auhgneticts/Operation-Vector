@@ -7,8 +7,8 @@ Public Module ImageLoader
         Dim list As New SortedList(Of String, Bitmap)
         workingPath = My.Application.Info.DirectoryPath + "\bitbin"
         Dim workingDir As New DirectoryInfo(workingPath)
-        Dim fWidth As Integer
-        Dim fIndex As Integer
+        Dim fWidth As UShort
+        Dim fIndex As UShort
         For Each f In workingDir.EnumerateFiles
             fIndex = f.Name.IndexOf("-"c)
             tempName = f.Name.Substring(0, fIndex)

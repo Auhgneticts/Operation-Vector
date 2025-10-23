@@ -28,7 +28,7 @@
             Case Keys.Escape
                 End
             Case Keys.S
-                TimerMove.Stop()
+                PauseGame("MSG", "YOOO")
         End Select
     End Sub
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
@@ -42,7 +42,7 @@
             Case Keys.Down
                 player.downSpeed = 0
             Case Keys.S
-                TimerMove.Start()
+                UnpauseGame()
         End Select
     End Sub
     Private Sub Form1_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
@@ -105,10 +105,10 @@
                     Next
                 End If
                 If enemy.Rectangle.IntersectsWith(player.Rectangle) Then
-                    ' Do Damage
                     enemy.explode = True
+                    'TODO
                     'player.explode
-                    EndGame(enemy)
+                    EndGame(EndGameEvent.Collision, enemy)
                     Exit Sub
                 End If
                 If enemy.X < Box.Left + enemy.Size.Width Then
@@ -141,6 +141,8 @@
         End If
     End Sub
     Private Sub TimerSpaceShipDirection_Tick(sender As Object, e As EventArgs) Handles TimerSpaceShipDir.Tick
+        'TODO
+        'Build this to use a TimeSpan within the object
         For Each enemy As EnemyShip In enemyList
             If enemy.tag = "saucerSmall" Then
                 enemy.ChangeDirection()
@@ -150,7 +152,7 @@
 
     Private Sub TimerEnemySpawn_Tick(sender As Object, e As EventArgs) Handles TimerEnemySpawn.Tick
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBigShooter, RandomInteger(6))
+        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShip, RandomInteger(6))
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
 

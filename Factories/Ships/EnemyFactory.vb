@@ -1,7 +1,7 @@
 ﻿Public Class EnemyFactory
     Enum EnemyType As Short
-        SpaceShipBigShooter
-        SpaceShipSmallShooter
+        SpaceShip
+        SpaceShipBig
         HeliBigShooter
         HeliSmallShooter
     End Enum
@@ -9,9 +9,9 @@
     'Private ReadOnly MakeHeli As New HeliFactory
     Public Function GetEnemy(type As EnemyType)
         Select Case type
-            Case EnemyType.SpaceShipBigShooter
+            Case EnemyType.SpaceShip
                 Return MakeSpaceShip.GetBigShooter
-            Case EnemyType.SpaceShipSmallShooter
+            Case EnemyType.SpaceShipBig
                 Return MakeSpaceShip.GetSmallShooter
             Case EnemyType.HeliBigShooter
                 Return Nothing

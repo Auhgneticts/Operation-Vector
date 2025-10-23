@@ -1,5 +1,11 @@
-﻿Module GameFunctions
+﻿Imports System.Runtime.InteropServices.JavaScript.JSType
 
+Module GameFunctions
+    Enum EndGameEvent As UShort
+        Shot
+        Collision
+        TimeUp
+    End Enum
     Structure Area
         'form1.left is slow
         Dim Left As Integer
@@ -20,6 +26,7 @@
     Friend enemyList As New List(Of EnemyShip)
     Friend gameBitmaps As New SortedList(Of String, Bitmap)
     Friend fontScore As New Font(FontFamily.GenericMonospace, 14)
+
     Public Sub StartGame()
         With Form1
             .TimerDraw.Start()
@@ -29,16 +36,41 @@
             .TimerEnemySpawn.Start()
         End With
     End Sub
-    Public Sub EndGame(enemy As EnemyShip)
+    Public Sub PauseGame(Optional message As String = "", Optional title As String = "")
         With Form1
             .TimerSpaceShipDir.Stop()
             .TimerEnemySpawn.Stop()
             .TimerMove.Stop()
             .TimerCheck.Stop()
         End With
-        If MsgBox("YOU DIED", MsgBoxStyle.Critical, "You hit a " + enemy.name) = MsgBoxResult.Ok Then
-            End
+        If message <> Nothing Then
+            MsgBox(message, MsgBoxStyle.Information, title)
         End If
+    End Sub
+    Public Sub UnpauseGame()
+        With Form1
+            .TimerSpaceShipDir.Start()
+            .TimerEnemySpawn.Start()
+            .TimerMove.Start()
+            .TimerCheck.Start()
+        End With
+    End Sub
+    Public Sub EndGame(endEvent As EndGameEvent, Optional ship As Ship = Nothing, Optional enemy As EnemyShip = Nothing, Optional ammoName As String = "")
+        Select Case endEvent
+            Case EndGameEvent.Collision
+                PauseGame()
+                If MsgBox("You hit a " + ship.name, MsgBoxStyle.Critical, "You didn't make it.") = MsgBoxResult.Ok Then
+                    End
+                End If
+            Case EndGameEvent.Shot
+                If MsgBox("Your craft " + ship.name + " was taken down by a " + enemy.name + " using " + ammoName + "s!", MsgBoxStyle.Critical, "We will continue the fight without you.") = MsgBoxResult.Ok Then
+                    End
+                End If
+            Case EndGameEvent.TimeUp
+                If MsgBox(" it apears that the time giving for the exersise has elapsed.", MsgBoxStyle.Critical, "So sorry " + player.name + "Opps, there's a timer!") = MsgBoxResult.Ok Then
+                    End
+                End If
+        End Select
     End Sub
     Public Sub SetupTimers()
         With Form1
@@ -51,7 +83,7 @@
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBigShooter, 5)
+        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShip, 5)
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
 
@@ -123,26 +155,34 @@
         Next
         Return tempEnemyList
     End Function
+    Public Function GetAmmo(type As AmmoFactory.AmmoType)
+        Select Case type
+            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
+                Return ammoFactory.GetBullet(type)
+            Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
+                Return ammoFactory.GetRod(type)
+                'Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
+                'return ammoFactory.GetLaser(type)
+        End Select
+        Return Nothing
+    End Function
     Public Function GetAmmoList(type As AmmoFactory.AmmoType, Number As Integer)
         Dim tempAmmoList As New List(Of Ammo)
+        Select Case type
         'Bullets
-        If type < 2 Then
-            For I As UShort = 1 To Number
-                tempAmmoList.Add(ammoFactory.GetBullet(type))
-            Next
-        End If
-        'Rods
-        If type > 1 And type < 4 Then
-            For I As UShort = 1 To Number
-                tempAmmoList.Add(ammoFactory.GetRod(type))
-            Next
-        End If
-        'Lasers
-        If type > 3 Then
-            For I As UShort = 1 To Number
-                'tempAmmoList.Add(ammoFactory.GetLaser(type))
-            Next
-        End If
+            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
+                For I As UShort = 1 To Number
+                    tempAmmoList.Add(ammoFactory.GetBullet(type))
+                Next
+            Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
+                For I As UShort = 1 To Number
+                    tempAmmoList.Add(ammoFactory.GetRod(type))
+                Next
+            Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
+                For I As UShort = 1 To Number
+                    'tempAmmoList.Add(ammoFactory.GetLaser(type))
+                Next
+        End Select
         Return tempAmmoList
 
         tempAmmoList = Nothing

@@ -8,8 +8,20 @@
     Friend ammoRodList As New List(Of Ammo)
     Public outOfAmmo As Boolean = False
 
-    Public Sub AddAmmo()
-        'modify ammolist of that type
+    Public Sub AddAmmo(type As AmmoFactory.AmmoType, Amount As Integer)
+        Select Case selectedAmmo
+            Case AmmoFactory.AmmoType.Bullet
+                ammoBulletList.Add(GameFunctions.ammoFactory.GetBullet(AmmoFactory.AmmoType.Bullet))
+            Case AmmoFactory.AmmoType.BulletBig
+                ammoBulletBigList.Add(GameFunctions.ammoFactory.GetBullet(AmmoFactory.AmmoType.BulletBig))
+            Case AmmoFactory.AmmoType.Rod
+                ammoRodList.Add(GameFunctions.ammoFactory.GetRod(AmmoFactory.AmmoType.Rod))
+            Case AmmoFactory.AmmoType.RodBig
+                ammoRodBigList.Add(GameFunctions.ammoFactory.GetRod(AmmoFactory.AmmoType.RodBig))
+            Case AmmoFactory.AmmoType.LaserBlue
+            Case AmmoFactory.AmmoType.LaserGreen
+            Case AmmoFactory.AmmoType.LaserRed
+        End Select
     End Sub
     Public Sub NextAmmoAvil()
         'check out of ammo flag
@@ -30,18 +42,13 @@
             Case AmmoFactory.AmmoType.Bullet
                 currentShot = ammoBulletList.Last
                 ammoBulletList.Remove(ammoBulletList.Last)
-                currentShot.Location = OffsetLocation
-                shotList.Add(currentShot)
-                currentShot = Nothing
-
             Case AmmoFactory.AmmoType.BulletBig
                 currentShot = ammoBulletBigList.Last
                 ammoBulletBigList.Remove(ammoBulletBigList.Last)
-                currentShot.Location = OffsetLocation
-                shotList.Add(currentShot)
-                currentShot = Nothing
-
         End Select
+        currentShot.Location = OffsetLocation
+        shotList.Add(currentShot)
+        currentShot = Nothing
     End Sub
     Public Sub Left()
         leftSpeed = xSpeed * -1
