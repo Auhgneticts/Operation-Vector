@@ -7,7 +7,7 @@ Class BulletFactory
             .name = "Big Bullet"
             .isAlive = False
             .scale = 3
-            .xSpeed = 10
+            .xSpeed = 35
             .Size = gameBitmaps("bullet").Size
         End With
         Return tempBullet

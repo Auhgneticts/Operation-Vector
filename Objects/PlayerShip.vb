@@ -3,7 +3,7 @@
     Private selectedAmmo As AmmoFactory.AmmoType
     Friend allAmmo As New SortedList(Of AmmoFactory.AmmoType, List(Of Ammo))
     Friend ammoBulletBigList As New List(Of Ammo)
-    Friend ammoBulletList As New List(Of Ammo)
+    Friend ammoBulletList As New List(Of AmmoBullet)
     Friend ammoRodBigList As New List(Of Ammo)
     Friend ammoRodList As New List(Of Ammo)
     Public outOfAmmo As Boolean = False
@@ -34,17 +34,38 @@
         'do more
     End Sub
     Public Sub AmmoSelect(newAmmo As AmmoFactory.AmmoType)
-        selectedAmmo = newAmmo
+        'If ammo.gunType = newAmmo.gunType ...
+        Select Case newAmmo
+            Case AmmoFactory.AmmoType.BulletBig
+                If ammoBulletBigList.Count > 0 Then
+                    selectedAmmo = AmmoFactory.AmmoType.BulletBig
+                End If
+            Case AmmoFactory.AmmoType.Rod
+                If ammoRodList.Count > 0 Then
+                    selectedAmmo = AmmoFactory.AmmoType.Rod
+                End If
+        End Select
     End Sub
     Public Sub Shoot()
         'If not allAmmo = 0
         Select Case selectedAmmo
             Case AmmoFactory.AmmoType.Bullet
-                currentShot = ammoBulletList.Last
-                ammoBulletList.Remove(ammoBulletList.Last)
+                'currentShot = allAmmo(AmmoFactory.AmmoType.Bullet).Last
+                If ammoBulletList.Count <> 0 Then
+                    currentShot = ammoBulletList.Last
+                Else
+                    Exit Select
+                End If
+                allAmmo(AmmoFactory.AmmoType.Bullet).Remove(allAmmo(AmmoFactory.AmmoType.Bullet).Last)
             Case AmmoFactory.AmmoType.BulletBig
-                currentShot = ammoBulletBigList.Last
+                'currentShot = allAmmo(AmmoFactory.AmmoType.BulletBig).Last
+                If ammoBulletBigList.Count <> 0 Then
+                    currentShot = ammoBulletBigList.Last
+                Else
+                    Exit Select
+                End If
                 ammoBulletBigList.Remove(ammoBulletBigList.Last)
+                'allAmmo(AmmoFactory.AmmoType.BulletBig).Remove(allAmmo(AmmoFactory.AmmoType.BulletBig).Last)
         End Select
         currentShot.Location = OffsetLocation
         shotList.Add(currentShot)

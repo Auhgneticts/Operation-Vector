@@ -2,23 +2,23 @@
     Public Function GetBigShooter() As EnemyShip
         Dim tempEnemy As New SpaceShip
         With tempEnemy
-            .ammoList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 20)
-            .imageName = "saucerSmall"
+            .imageName = "saucerBig"
             .scale = 2
             .Size = gameBitmaps(.imageName).Size
             .shooter = True
-            .tag = "saucerSmall"
-            .name = "Space Ship big shooter"
+            .tag = "saucerBig"
+            .name = "Space ship big shooter"
             .isAlive = True
             .scoreMulti = 1
             .baseScore = 50
-            .xSpeedMax = 10
+            .xSpeedMax = 120
             .ySpeedMax = 20
-            .xSpeed = 1
-            .ySpeed = 20
-            .leftSpeed = -1
+            .leftSpeed = RandomInteger(40) * -1
+            '.ySpeed = RandomInteger(20)
+            .ySpeed = .leftSpeed / -3
             .Location = RandomY(.Size * 2)
         End With
+        tempEnemy.ammoList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 20)
         Return tempEnemy
         tempEnemy = Nothing
     End Function
@@ -26,22 +26,22 @@
     Public Function GetSmallShooter() As EnemyShip
         Dim tempEnemy As New SpaceShip
         With tempEnemy
-            .ammoList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 10)
             .scale = 1
-            .Size = gameBitmaps("saucerSmall").Size
+            .Size = gameBitmaps(.imageName).Size
             .shooter = True
             .tag = "saucerSmall"
             .name = "Space Ship small shooter"
             .isAlive = True
             .scoreMulti = 1
             .baseScore = 25
-            .xSpeedMax = 10
-            .ySpeedMax = 20
+            .xSpeedMax = 40
+            .ySpeedMax = 40
             .xSpeed = 10
             .ySpeed = 2
             .leftSpeed = -3
             .Location = RandomY(.Size * 2)
         End With
+        tempEnemy.ammoList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 10)
         Return tempEnemy
         tempEnemy = Nothing
     End Function

@@ -3,12 +3,12 @@
     Public Overrides Sub ChangeDirection()
         If up = True Then
             downSpeed = 0
-            upSpeed = xSpeed * -1
+            upSpeed = ySpeed * -1
             up = False
             Exit Sub
         ElseIf up = False Then
             upSpeed = 0
-            downSpeed = xSpeed
+            downSpeed = ySpeed
             up = True
             Exit Sub
         End If

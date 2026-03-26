@@ -83,7 +83,7 @@ Module GameFunctions
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShip, 5)
+        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBig, 5)
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
 
@@ -98,21 +98,23 @@ Module GameFunctions
             .Location = New PointF(Box.Left + .Size.Width, Box.Bottom \ 2 - .Size.Height)
             .pen = Pens.IndianRed
             .Offset = New PointF(30, 9)
-            .xSpeed = 6
-            .ySpeed = 6
+            .xSpeed = 16
+            .ySpeed = 16
             .xSpeedMax = 30
             .ySpeedMax = 24
-            .ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
-            .ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 99)
-            .allAmmo.Add(AmmoFactory.AmmoType.Bullet, .ammoBulletList)
-            .allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
+            '.ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
+            'Select ammo as would GUI
+            'Finish allAmmo
+            '.allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
+            ''SELECT BULLET TO SHOOOT on ship
         End With
         ''' Testing '''
-
+        player.ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 99)
+        player.AmmoSelect(AmmoFactory.AmmoType.BulletBig)
     End Sub
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
-        globalScale = 1
+        globalScale = 2
         Box.Right = Form1.Right
         Box.Left = Form1.Left
         Box.Top = Form1.Top
@@ -171,20 +173,24 @@ Module GameFunctions
         Select Case type
         'Bullets
             Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
-                For I As UShort = 1 To Number
+                For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetBullet(type))
                 Next
+                Return tempAmmoList
+                tempAmmoList = Nothing
             Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
-                For I As UShort = 1 To Number
+                For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetRod(type))
                 Next
+                Return tempAmmoList
+                tempAmmoList = Nothing
             Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
-                For I As UShort = 1 To Number
+                For I = 1 To Number
                     'tempAmmoList.Add(ammoFactory.GetLaser(type))
                 Next
+                Return tempAmmoList
+                tempAmmoList = Nothing
         End Select
-        Return tempAmmoList
-
-        tempAmmoList = Nothing
+        Return Nothing
     End Function
 End Module

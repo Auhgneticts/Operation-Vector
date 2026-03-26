@@ -10,9 +10,9 @@
     Public Function GetEnemy(type As EnemyType)
         Select Case type
             Case EnemyType.SpaceShip
-                Return MakeSpaceShip.GetBigShooter
-            Case EnemyType.SpaceShipBig
                 Return MakeSpaceShip.GetSmallShooter
+            Case EnemyType.SpaceShipBig
+                Return MakeSpaceShip.GetBigShooter
             Case EnemyType.HeliBigShooter
                 Return Nothing
             Case EnemyType.HeliSmallShooter

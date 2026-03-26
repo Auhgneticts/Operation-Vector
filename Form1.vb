@@ -111,7 +111,7 @@
                     EndGame(EndGameEvent.Collision, enemy)
                     Exit Sub
                 End If
-                If enemy.X < Box.Left + enemy.Size.Width Then
+                If enemy.X < Box.Left - enemy.Size.Width Then
                     Score -= enemy.baseScore * enemy.scoreMulti
                     enemy.isAlive = False
                 End If
@@ -144,7 +144,7 @@
         'TODO
         'Build this to use a TimeSpan within the object
         For Each enemy As EnemyShip In enemyList
-            If enemy.tag = "saucerSmall" Then
+            If enemy.tag = "saucerSmall" Or enemy.tag = "saucerBig" Then
                 enemy.ChangeDirection()
             End If
         Next
@@ -152,7 +152,7 @@
 
     Private Sub TimerEnemySpawn_Tick(sender As Object, e As EventArgs) Handles TimerEnemySpawn.Tick
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShip, RandomInteger(6))
+        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBig, RandomInteger(6))
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
 

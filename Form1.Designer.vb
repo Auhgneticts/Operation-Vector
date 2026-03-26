@@ -33,12 +33,12 @@ Partial Class Form1
         ' 
         ' TimerDraw
         ' 
-        TimerDraw.Interval = 14
+        TimerDraw.Interval = 15
         ' 
         ' TimerCheck
         ' 
         TimerCheck.Enabled = True
-        TimerCheck.Interval = 30
+        TimerCheck.Interval = 8
         ' 
         ' TimerMove
         ' 
@@ -46,7 +46,6 @@ Partial Class Form1
         ' 
         ' TimerSpaceShipDir
         ' 
-        TimerSpaceShipDir.Interval = 500
         ' 
         ' TimerEnemySpawn
         ' 
@@ -56,23 +55,24 @@ Partial Class Form1
         ' 
         Label1.AutoSize = True
         Label1.Dock = DockStyle.Bottom
-        Label1.Location = New Point(0, 461)
+        Label1.Location = New Point(0, 1227)
         Label1.Name = "Label1"
-        Label1.Size = New Size(88, 60)
+        Label1.Size = New Size(110, 80)
         Label1.TabIndex = 0
         Label1.Text = "HUD area" & vbCrLf & "ESC = quit" & vbCrLf & "Arrows = move" & vbCrLf & "Space = Fire"
         ' 
         ' Form1
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = Color.DimGray
-        ClientSize = New Size(990, 521)
+        ClientSize = New Size(2269, 1307)
         Controls.Add(Label1)
         DoubleBuffered = True
         FormBorderStyle = FormBorderStyle.None
         KeyPreview = True
+        Margin = New Padding(3, 4, 3, 4)
         MaximizeBox = False
         MinimizeBox = False
         Name = "Form1"
