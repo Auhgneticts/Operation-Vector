@@ -1,6 +1,4 @@
-﻿Imports System.Runtime.InteropServices.JavaScript.JSType
-
-Module GameFunctions
+﻿Module GameFunctions
     Enum EndGameEvent As UShort
         Shot
         Collision
@@ -93,7 +91,7 @@ Module GameFunctions
     Public Sub LoadPlayer()
         With player
             .name = "David"
-            .scale = 2
+            .scale = 2 'Size only? Do not affect acceleration and max speed, like Global???
             .Size = gameBitmaps("heli").Size
             .Location = New PointF(Box.Left + .Size.Width, Box.Bottom \ 2 - .Size.Height)
             .pen = Pens.IndianRed
@@ -102,15 +100,12 @@ Module GameFunctions
             .ySpeed = 16
             .xSpeedMax = 30
             .ySpeedMax = 24
+            .ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 99)
             '.ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
-            'Select ammo as would GUI
-            'Finish allAmmo
-            '.allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
-            ''SELECT BULLET TO SHOOOT on ship
+            .allAmmo.Add(AmmoFactory.AmmoType.BulletBig, .ammoBulletBigList.AsEnumerable)
+            .AmmoSelect(AmmoFactory.AmmoType.BulletBig)
         End With
         ''' Testing '''
-        player.ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 99)
-        player.AmmoSelect(AmmoFactory.AmmoType.BulletBig)
     End Sub
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
