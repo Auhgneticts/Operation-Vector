@@ -80,6 +80,12 @@
                     End If
             End Select
         End If
+        currentShot = Nothing
+        End Select
+        End If
+        currentShot = Nothing
+        End Select
+        End If
     End Sub
     Public Sub Left()
         leftSpeed = xSpeed * -1
