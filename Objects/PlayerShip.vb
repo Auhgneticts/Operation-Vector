@@ -3,11 +3,13 @@
     Private selectedAmmo As AmmoFactory.AmmoType
     Friend allAmmo As New SortedList(Of AmmoFactory.AmmoType, List(Of Ammo))
     Friend ammoBulletBigList As New List(Of Ammo)
-    Friend ammoBulletList As New List(Of AmmoBullet)
-    Friend ammoRodBigList As New List(Of AmmoRod)
-    Friend ammoRodList As New List(Of AmmoRod)
-    Public outOfCurrentAmmo As Boolean = False
-    Public outOfAllAmmo As Boolean = False
+    Friend ammoBulletList As New List(Of Ammo)
+    Friend ammoRodBigList As New List(Of Ammo)
+    Friend ammoRodList As New List(Of Ammo)
+    Friend outOfCurrentAmmo As Boolean = False
+    Friend outOfAllAmmo As Boolean = False
+    Friend ammoAutoSelect As Boolean = False
+
     Public Overrides Function GetAmmoAmount() As Integer
         Return ammoBulletBigList.Count
     End Function
@@ -28,7 +30,7 @@
     End Sub
     Public Sub NextAmmoAvil()
         'check out of ammo flag
-        If outOfAmmo Then
+        If outOfCurrentAmmo Then
             'alert Out of Ammo
             Exit Sub
         End If
@@ -50,7 +52,7 @@
         End Select
     End Sub
     Public Sub Shoot()
-        If Not outOfAllAmmo Then
+        If Not outOfCurrentAmmo Then
             Select Case selectedAmmo
                 Case AmmoFactory.AmmoType.Bullet
                     'currentShot = allAmmo(AmmoFactory.AmmoType.Bullet).Last
@@ -66,21 +68,17 @@
                         currentShot = ammoBulletBigList.Last
                         outText(ammoBulletBigList.Count.ToString + " " + ammoBulletBigList.First.name + " remaining")
                         ammoBulletBigList.Remove(ammoBulletBigList.Last)
-                    ElseIf ammoBulletBigList.Count = 0 Then
+                        currentShot.Location = OffsetLocation
+                        shotList.Add(currentShot)
+                        currentShot = Nothing
+                    Else
                         outOfCurrentAmmo = True
                         If ammoAutoSelect Then
                             NextAmmoAvil()
                         End If
                         PauseGame("Out of Ammo", "Demo Done")
-                        Exit Select
                     End If
-                    currentShot.Location = OffsetLocation
-                    shotList.Add(currentShot)
-                    currentShot = Nothing
             End Select
-        End If
-        currentShot = Nothing
-        End Select
         End If
     End Sub
     Public Sub Left()

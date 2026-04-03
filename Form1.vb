@@ -28,7 +28,7 @@
             Case Keys.Escape
                 End
             Case Keys.S
-                PauseGame("MSG", "YOOO")
+                PauseGame()
         End Select
     End Sub
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
@@ -156,7 +156,7 @@
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles outDebug.TextChanged
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs)
 
     End Sub
 End Class

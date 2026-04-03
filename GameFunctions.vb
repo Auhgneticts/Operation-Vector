@@ -84,11 +84,10 @@ Module GameFunctions
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(enemyFactory.EnemyType.SpaceShipBig, 5)
+        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBig, 5)
         enemyList.AddRange(tempEnemyList)
         outText("Enimies Loaded")
     End Sub
-
     Public Sub LoadBitmaps()
         gameBitmaps = ImageLoader.Load()
     End Sub
@@ -104,19 +103,18 @@ Module GameFunctions
             .ySpeed = 16
             .xSpeedMax = 30
             .ySpeedMax = 24
-            .ammoBulletBigList = GetAmmoList(ammoFactory.AmmoType.BulletBig, 9)
-            '.ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
-            .AmmoSelect(ammoFactory.AmmoType.BulletBig)
             'Select ammo as would GUI
             'Finish allAmmo
             '.allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
             ''SELECT BULLET TO SHOOOT on ship
         End With
+        player.ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 9)
+        player.allAmmo.Add(AmmoFactory.AmmoType.BulletBig, player.ammoBulletBigList)
+        player.AmmoSelect(AmmoFactory.AmmoType.BulletBig)
         ''' Testing '''
     End Sub
-    End Sub
     Public Sub outText(value As String)
-        Form1.outDebug.AppendText(value)
+        Form1.outDebug.AppendText(vbCrLf + value)
     End Sub
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
@@ -165,9 +163,9 @@ Module GameFunctions
     End Function
     Public Function GetAmmo(type As AmmoFactory.AmmoType)
         Select Case type
-            Case ammoFactory.AmmoType.Bullet Or ammoFactory.AmmoType.BulletBig
+            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
                 Return ammoFactory.GetBullet(type)
-            Case ammoFactory.AmmoType.Rod Or ammoFactory.AmmoType.RodBig
+            Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
                 Return ammoFactory.GetRod(type)
                 'Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
                 'return ammoFactory.GetLaser(type)
@@ -177,21 +175,21 @@ Module GameFunctions
     Public Function GetAmmoList(type As AmmoFactory.AmmoType, Number As Integer)
         Select Case type
         'Bullets
-            Case ammoFactory.AmmoType.Bullet Or ammoFactory.AmmoType.BulletBig
-                Dim tempAmmoList As New List(Of AmmoBullet)
+            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
+                Dim tempAmmoList As New List(Of Ammo)
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetBullet(type))
                 Next
                 Return tempAmmoList
                 tempAmmoList = Nothing
-            Case ammoFactory.AmmoType.Rod Or ammoFactory.AmmoType.RodBig
+            Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
                 Dim tempAmmoList As New List(Of AmmoRod)
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetRod(type))
                 Next
                 Return tempAmmoList
                 tempAmmoList = Nothing
-            Case ammoFactory.AmmoType.LaserBlue Or ammoFactory.AmmoType.LaserGreen Or ammoFactory.AmmoType.LaserRed
+            Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
                 Dim tempAmmoList As New List(Of AmmoLaser)
                 For I = 1 To Number
                     'tempAmmoList.Add(ammoFactory.GetLaser(type))

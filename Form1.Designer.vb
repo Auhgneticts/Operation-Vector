@@ -64,22 +64,14 @@ Partial Class Form1
         ' 
         ' outDebug
         ' 
-        outDebug.Anchor = AnchorStyles.Bottom
-        outDebug.BackColor = SystemColors.Window
-        outDebug.BorderStyle = BorderStyle.FixedSingle
-        outDebug.Font = New Font("Segoe UI Semibold", 7.8F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        outDebug.Location = New Point(150, 1387)
-        outDebug.MaximumSize = New Size(0, 150)
-        outDebug.MinimumSize = New Size(300, 50)
+        outDebug.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        outDebug.BorderStyle = BorderStyle.None
+        outDebug.Enabled = False
+        outDebug.Location = New Point(116, 1373)
         outDebug.Multiline = True
         outDebug.Name = "outDebug"
-        outDebug.ReadOnly = True
-        outDebug.ScrollBars = ScrollBars.Vertical
-        outDebug.ShortcutsEnabled = False
-        outDebug.Size = New Size(874, 117)
-        outDebug.TabIndex = 1
-        outDebug.TabStop = False
-        outDebug.WordWrap = False
+        outDebug.Size = New Size(687, 131)
+        outDebug.TabIndex = 0
         ' 
         ' Form1
         ' 
