@@ -1,13 +1,15 @@
 ﻿Public Class PlayerShip
     Inherits Ship
     Private selectedAmmo As AmmoFactory.AmmoType
-    Friend allAmmo As New SortedList(Of AmmoFactory.AmmoType, List(Of Ammo))
-    Friend ammoBulletBigList As New List(Of Ammo)
+    Friend allAmmo As New SortedList(Of AmmoFactory.AmmoType, List(Of Object))
+    Friend ammoBulletBigList As New List(Of AmmoBullet)
     Friend ammoBulletList As New List(Of AmmoBullet)
     Friend ammoRodBigList As New List(Of AmmoRod)
     Friend ammoRodList As New List(Of AmmoRod)
-    Public outOfCurrentAmmo As Boolean = False
-    Public outOfAllAmmo As Boolean = False
+    Friend outOfCurrentAmmo As Boolean = False
+    Friend outOfAllAmmo As Boolean = False
+    Friend ammoAutoSelect As Boolean = False
+
     Public Overrides Function GetAmmoAmount() As Integer
         Return ammoBulletBigList.Count
     End Function
@@ -28,7 +30,7 @@
     End Sub
     Public Sub NextAmmoAvil()
         'check out of ammo flag
-        If outOfAmmo Then
+        If outOfCurrentAmmo Then
             'alert Out of Ammo
             Exit Sub
         End If
@@ -78,9 +80,6 @@
                     shotList.Add(currentShot)
                     currentShot = Nothing
             End Select
-        End If
-        currentShot = Nothing
-        End Select
         End If
     End Sub
     Public Sub Left()
