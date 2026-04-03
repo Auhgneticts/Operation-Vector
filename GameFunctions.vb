@@ -1,4 +1,6 @@
-﻿Module GameFunctions
+﻿Imports System.Runtime.InteropServices.JavaScript.JSType
+
+Module GameFunctions
     Enum EndGameEvent As UShort
         Shot
         Collision
@@ -82,7 +84,7 @@
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBig, 5)
+        tempEnemyList = GetEnemyList(enemyFactory.EnemyType.SpaceShipBig, 5)
         enemyList.AddRange(tempEnemyList)
         outText("Enimies Loaded")
     End Sub
@@ -93,7 +95,7 @@
     Public Sub LoadPlayer()
         With player
             .name = "David"
-            .scale = 2 'Size only? Do not affect acceleration and max speed, like Global???
+            .scale = 2
             .Size = gameBitmaps("heli").Size
             .Location = New PointF(Box.Left + .Size.Width, Box.Bottom \ 2 - .Size.Height)
             .pen = Pens.IndianRed
@@ -102,12 +104,16 @@
             .ySpeed = 16
             .xSpeedMax = 30
             .ySpeedMax = 24
-            .ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 9)
+            .ammoBulletBigList = GetAmmoList(ammoFactory.AmmoType.BulletBig, 9)
             '.ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
-            .AmmoSelect(AmmoFactory.AmmoType.BulletBig)
+            .AmmoSelect(ammoFactory.AmmoType.BulletBig)
+            'Select ammo as would GUI
+            'Finish allAmmo
+            '.allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
+            ''SELECT BULLET TO SHOOOT on ship
         End With
         ''' Testing '''
-        outText("Player Loaded")
+    End Sub
     End Sub
     Public Sub outText(value As String)
         Form1.outDebug.AppendText(value)
@@ -159,9 +165,9 @@
     End Function
     Public Function GetAmmo(type As AmmoFactory.AmmoType)
         Select Case type
-            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
+            Case ammoFactory.AmmoType.Bullet Or ammoFactory.AmmoType.BulletBig
                 Return ammoFactory.GetBullet(type)
-            Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
+            Case ammoFactory.AmmoType.Rod Or ammoFactory.AmmoType.RodBig
                 Return ammoFactory.GetRod(type)
                 'Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
                 'return ammoFactory.GetLaser(type)
@@ -171,21 +177,21 @@
     Public Function GetAmmoList(type As AmmoFactory.AmmoType, Number As Integer)
         Select Case type
         'Bullets
-            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
+            Case ammoFactory.AmmoType.Bullet Or ammoFactory.AmmoType.BulletBig
                 Dim tempAmmoList As New List(Of AmmoBullet)
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetBullet(type))
                 Next
                 Return tempAmmoList
                 tempAmmoList = Nothing
-            Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
+            Case ammoFactory.AmmoType.Rod Or ammoFactory.AmmoType.RodBig
                 Dim tempAmmoList As New List(Of AmmoRod)
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetRod(type))
                 Next
                 Return tempAmmoList
                 tempAmmoList = Nothing
-            Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
+            Case ammoFactory.AmmoType.LaserBlue Or ammoFactory.AmmoType.LaserGreen Or ammoFactory.AmmoType.LaserRed
                 Dim tempAmmoList As New List(Of AmmoLaser)
                 For I = 1 To Number
                     'tempAmmoList.Add(ammoFactory.GetLaser(type))

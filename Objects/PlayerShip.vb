@@ -2,8 +2,7 @@
     Inherits Ship
     Private selectedAmmo As AmmoFactory.AmmoType
     Friend allAmmo As New SortedList(Of AmmoFactory.AmmoType, List(Of Ammo))
-    Friend ammoAutoSelect As Boolean = False
-    Friend ammoBulletBigList As New List(Of AmmoBullet)
+    Friend ammoBulletBigList As New List(Of Ammo)
     Friend ammoBulletList As New List(Of AmmoBullet)
     Friend ammoRodBigList As New List(Of AmmoRod)
     Friend ammoRodList As New List(Of AmmoRod)
@@ -29,13 +28,12 @@
     End Sub
     Public Sub NextAmmoAvil()
         'check out of ammo flag
-        selectedAmmo += 1
-        If allAmmo(selectedAmmo).Count <> 0 Then
-            'change HUD to new Ammo - Gun
-            'Link / Update HUD ammo counters.  Here??
-            outOfCurrentAmmo = False
+        If outOfAmmo Then
+            'alert Out of Ammo
+            Exit Sub
         End If
-        'Build a Bettter System!!!
+        selectedAmmo += 1
+        If allAmmo(selectedAmmo).Count = 0 Then selectedAmmo += 1
         'do more
     End Sub
     Public Sub AmmoSelect(newAmmo As AmmoFactory.AmmoType)
@@ -80,6 +78,9 @@
                     shotList.Add(currentShot)
                     currentShot = Nothing
             End Select
+        End If
+        currentShot = Nothing
+        End Select
         End If
     End Sub
     Public Sub Left()
