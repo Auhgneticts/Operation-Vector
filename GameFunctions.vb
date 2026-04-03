@@ -5,7 +5,6 @@
         TimeUp
     End Enum
     Structure Area
-        'form1.left is slow
         Dim Left As Integer
         Dim Right As Integer
         Dim Top As Integer
@@ -24,7 +23,6 @@
     Friend enemyList As New List(Of EnemyShip)
     Friend gameBitmaps As New SortedList(Of String, Bitmap)
     Friend fontScore As New Font(FontFamily.GenericMonospace, 14)
-
     Public Sub StartGame()
         With Form1
             .TimerDraw.Start()
@@ -33,6 +31,7 @@
             .TimerSpaceShipDir.Start()
             .TimerEnemySpawn.Start()
         End With
+        outText("Game Started")
     End Sub
     Public Sub PauseGame(Optional message As String = "", Optional title As String = "")
         With Form1
@@ -74,15 +73,18 @@
         With Form1
             .TimerDraw.Interval = 15
             .TimerMove.Interval = 15
-            .TimerCheck.Interval = 30
-            .TimerSpaceShipDir.Interval = 500
+            .TimerCheck.Interval = 15
+
+            'make Varibles
+            .TimerSpaceShipDir.Interval = 200
             .TimerEnemySpawn.Interval = 3000
         End With
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
         tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBig, 5)
-        enemyList.AddRange(tempEnemyList.AsEnumerable)
+        enemyList.AddRange(tempEnemyList)
+        outText("Enimies Loaded")
     End Sub
 
     Public Sub LoadBitmaps()
@@ -100,12 +102,15 @@
             .ySpeed = 16
             .xSpeedMax = 30
             .ySpeedMax = 24
-            .ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 99)
+            .ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 9)
             '.ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
-            .allAmmo.Add(AmmoFactory.AmmoType.BulletBig, .ammoBulletBigList.AsEnumerable)
             .AmmoSelect(AmmoFactory.AmmoType.BulletBig)
         End With
         ''' Testing '''
+        outText("Player Loaded")
+    End Sub
+    Public Sub outText(value As String)
+        Form1.outDebug.AppendText(value)
     End Sub
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
@@ -164,22 +169,24 @@
         Return Nothing
     End Function
     Public Function GetAmmoList(type As AmmoFactory.AmmoType, Number As Integer)
-        Dim tempAmmoList As New List(Of Ammo)
         Select Case type
         'Bullets
             Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
+                Dim tempAmmoList As New List(Of AmmoBullet)
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetBullet(type))
                 Next
                 Return tempAmmoList
                 tempAmmoList = Nothing
             Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
+                Dim tempAmmoList As New List(Of AmmoRod)
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetRod(type))
                 Next
                 Return tempAmmoList
                 tempAmmoList = Nothing
             Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
+                Dim tempAmmoList As New List(Of AmmoLaser)
                 For I = 1 To Number
                     'tempAmmoList.Add(ammoFactory.GetLaser(type))
                 Next

@@ -29,6 +29,7 @@ Partial Class Form1
         TimerSpaceShipDir = New Timer(components)
         TimerEnemySpawn = New Timer(components)
         Label1 = New Label()
+        outDebug = New TextBox()
         SuspendLayout()
         ' 
         ' TimerDraw
@@ -55,11 +56,30 @@ Partial Class Form1
         ' 
         Label1.AutoSize = True
         Label1.Dock = DockStyle.Bottom
-        Label1.Location = New Point(0, 1227)
+        Label1.Location = New Point(0, 1424)
         Label1.Name = "Label1"
         Label1.Size = New Size(110, 80)
         Label1.TabIndex = 0
         Label1.Text = "HUD area" & vbCrLf & "ESC = quit" & vbCrLf & "Arrows = move" & vbCrLf & "Space = Fire"
+        ' 
+        ' outDebug
+        ' 
+        outDebug.Anchor = AnchorStyles.Bottom
+        outDebug.BackColor = SystemColors.Window
+        outDebug.BorderStyle = BorderStyle.FixedSingle
+        outDebug.Font = New Font("Segoe UI Semibold", 7.8F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        outDebug.Location = New Point(150, 1387)
+        outDebug.MaximumSize = New Size(0, 150)
+        outDebug.MinimumSize = New Size(300, 50)
+        outDebug.Multiline = True
+        outDebug.Name = "outDebug"
+        outDebug.ReadOnly = True
+        outDebug.ScrollBars = ScrollBars.Vertical
+        outDebug.ShortcutsEnabled = False
+        outDebug.Size = New Size(874, 117)
+        outDebug.TabIndex = 1
+        outDebug.TabStop = False
+        outDebug.WordWrap = False
         ' 
         ' Form1
         ' 
@@ -67,7 +87,8 @@ Partial Class Form1
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = Color.DimGray
-        ClientSize = New Size(2269, 1307)
+        ClientSize = New Size(2573, 1504)
+        Controls.Add(outDebug)
         Controls.Add(Label1)
         DoubleBuffered = True
         FormBorderStyle = FormBorderStyle.None
@@ -90,5 +111,6 @@ Partial Class Form1
     Friend WithEvents TimerSpaceShipDir As Timer
     Friend WithEvents TimerEnemySpawn As Timer
     Friend WithEvents Label1 As Label
+    Friend WithEvents outDebug As TextBox
 
 End Class

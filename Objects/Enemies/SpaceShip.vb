@@ -1,5 +1,6 @@
 ﻿Public Class SpaceShip
     Inherits EnemyShip
+    Friend ammoLaserList As List(Of AmmoLaser)
     Public Overrides Sub ChangeDirection()
         If up = True Then
             downSpeed = 0
@@ -13,6 +14,9 @@
             Exit Sub
         End If
     End Sub
+    Overrides Function GetAmmoAmount() As Integer
+        Return ammoLaserList.Count
+    End Function
     Sub New()
         'random initail move direction
         Dim value As Integer = CInt(Int((2 * Rnd()) + 1))

@@ -9,7 +9,9 @@
     Friend ammoRodList As New List(Of AmmoRod)
     Public outOfCurrentAmmo As Boolean = False
     Public outOfAllAmmo As Boolean = False
-
+    Public Overrides Function GetAmmoAmount() As Integer
+        Return ammoBulletBigList.Count
+    End Function
     Public Sub AddAmmo(type As AmmoFactory.AmmoType, Amount As Integer)
         Select Case selectedAmmo
             Case AmmoFactory.AmmoType.Bullet
@@ -40,7 +42,7 @@
         'If ammo.gunType = newAmmo.gunType ...
         Select Case newAmmo
             Case AmmoFactory.AmmoType.BulletBig
-                If allAmmo(newAmmo).Count > 0 Then
+                If ammoBulletBigList.Count > 0 Then
                     selectedAmmo = AmmoFactory.AmmoType.BulletBig
                 End If
             Case AmmoFactory.AmmoType.Rod
@@ -50,32 +52,35 @@
         End Select
     End Sub
     Public Sub Shoot()
-        'If not allAmmo = 0
-        Select Case selectedAmmo
-            Case AmmoFactory.AmmoType.Bullet
-                'currentShot = allAmmo(AmmoFactory.AmmoType.Bullet).Last
-                If ammoBulletList.Count <> 0 Then
-                    currentShot = ammoBulletList.Last
-                Else
-                    Exit Select
-                End If
-                'allAmmo(AmmoFactory.AmmoType.Bullet).Remove(allAmmo(AmmoFactory.AmmoType.Bullet).Last)
-            Case AmmoFactory.AmmoType.BulletBig
-                'currentShot = allAmmo(AmmoFactory.AmmoType.BulletBig).Last
-                If allAmmo(selectedAmmo).Count > 0 Then
-                    currentShot = ammoBulletBigList.Last
-                    ammoBulletBigList.Remove(ammoBulletBigList.Last)
-                Else
-                    outOfCurrentAmmo = True
-                    If ammoAutoSelect Then
-                        NextAmmoAvil()
+        If Not outOfAllAmmo Then
+            Select Case selectedAmmo
+                Case AmmoFactory.AmmoType.Bullet
+                    'currentShot = allAmmo(AmmoFactory.AmmoType.Bullet).Last
+                    If ammoBulletList.Count <> 0 Then
+                        currentShot = ammoBulletList.Last
+                    Else
+                        outText("Out of Ammo" + ammoBulletList.ToString)
+                        Exit Select
                     End If
-                    Exit Select
-                End If
-        End Select
-        currentShot.Location = OffsetLocation
-        shotList.Add(currentShot)
-        currentShot = Nothing
+                'allAmmo(AmmoFactory.AmmoType.Bullet).Remove(allAmmo(AmmoFactory.AmmoType.Bullet).Last)
+                Case AmmoFactory.AmmoType.BulletBig
+                    If ammoBulletBigList.Count <> 0 Then
+                        currentShot = ammoBulletBigList.Last
+                        outText(ammoBulletBigList.Count.ToString + " " + ammoBulletBigList.First.name + " remaining")
+                        ammoBulletBigList.Remove(ammoBulletBigList.Last)
+                    ElseIf ammoBulletBigList.Count = 0 Then
+                        outOfCurrentAmmo = True
+                        If ammoAutoSelect Then
+                            NextAmmoAvil()
+                        End If
+                        PauseGame("Out of Ammo", "Demo Done")
+                        Exit Select
+                    End If
+                    currentShot.Location = OffsetLocation
+                    shotList.Add(currentShot)
+                    currentShot = Nothing
+            End Select
+        End If
     End Sub
     Public Sub Left()
         leftSpeed = xSpeed * -1

@@ -2,9 +2,8 @@
     Private rectangleValueF As RectangleF
     Private frameRects As List(Of RectangleF)
     Private offsetValue As PointF
-    Friend weight As Integer
-    Friend health As Integer
-    Friend tag As String
+    Friend weight As Integer ' -1 do not evaluate
+    Friend health As Integer ' -1 for Indestructable do not evaluate
     Friend imageName As String
     Friend scale As Integer
     Friend moveSpeed As Double
@@ -12,9 +11,10 @@
     Friend xSpeedMax, ySpeedMax As Double
     Friend pen As Pen
     Friend brush As Brush
+    Friend name As String
     'public
     Public isAlive As Boolean = False
-    Public name As String
+
     Property Location As PointF
         Get
             Return rectangleValueF.Location
@@ -62,6 +62,13 @@
             rectangleValueF.Y = value
         End Set
     End Property
+    Overridable Sub CheckHealth()
+        If isAlive Then
+            outText("Object is Dead")
+            Exit Sub
+        End If
+
+    End Sub
     Overridable Sub Move()
 
     End Sub

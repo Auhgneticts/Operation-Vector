@@ -144,7 +144,7 @@
         'TODO
         'Build this to use a TimeSpan within the object
         For Each enemy As EnemyShip In enemyList
-            If enemy.tag = "saucerSmall" Or enemy.tag = "saucerBig" Then
+            If enemy.imageName = "saucerSmall" Or enemy.imageName = "saucerBig" Then
                 enemy.ChangeDirection()
             End If
         Next
@@ -156,4 +156,7 @@
         enemyList.AddRange(tempEnemyList.AsEnumerable)
     End Sub
 
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles outDebug.TextChanged
+
+    End Sub
 End Class

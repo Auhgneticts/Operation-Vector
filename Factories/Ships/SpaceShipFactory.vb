@@ -6,7 +6,6 @@
             .scale = 2
             .Size = gameBitmaps(.imageName).Size
             .shooter = True
-            .tag = "saucerBig"
             .name = "Space ship big shooter"
             .isAlive = True
             .scoreMulti = 1
@@ -18,7 +17,7 @@
             .ySpeed = .leftSpeed / -3
             .Location = RandomY(.Size * 2)
         End With
-        tempEnemy.ammoList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 20)
+        tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserRed, 2)
         Return tempEnemy
         tempEnemy = Nothing
     End Function
@@ -29,7 +28,6 @@
             .scale = 1
             .Size = gameBitmaps(.imageName).Size
             .shooter = True
-            .tag = "saucerSmall"
             .name = "Space Ship small shooter"
             .isAlive = True
             .scoreMulti = 1
@@ -41,7 +39,7 @@
             .leftSpeed = -3
             .Location = RandomY(.Size * 2)
         End With
-        tempEnemy.ammoList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 10)
+        tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserBlue, 3)
         Return tempEnemy
         tempEnemy = Nothing
     End Function

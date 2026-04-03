@@ -2,7 +2,6 @@
     Inherits BaseObject
     'holds collectables. as lists???
     Friend cargoList As New List(Of Collectable)
-    Friend ammoList As New List(Of Ammo)
     Friend shotList As New List(Of Ammo)
     Friend currentShot As Ammo
     Friend explode As Boolean = False
@@ -11,9 +10,6 @@
     Friend tSpan As TimeSpan
     Friend grow As Single = 1
     Public leftSpeed, rightSpeed, upSpeed, downSpeed As Single
-    Public Function GetAmmoAmount() As Integer
-        Return ammoList.Count
-    End Function
     Public Sub DrawExplosion(g As Graphics)
         ''' if slow think of global
         If boomStart = False Then
@@ -38,11 +34,15 @@
             explode = True
             Me.isAlive = False
         Else
-            Me.health = Me.health - amount
+            Me.health -= amount
         End If
     End Sub
     Overrides Sub Move()
 
     End Sub
+    Overridable Function GetAmmoAmount() As Integer
+        Return Nothing
+        outText("Not Implimented in Ship/GetAmmoAmount::Exiting Function")
+    End Function
 
 End Class
