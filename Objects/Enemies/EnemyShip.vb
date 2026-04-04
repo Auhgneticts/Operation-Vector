@@ -8,6 +8,10 @@
     Public Sub Draw(g As Graphics)
         g.DrawImage(gameBitmaps(imageName), Rectangle)
     End Sub
+    Public Overrides Sub DrawBounds(g As Graphics)
+        'offsets bounding box Width
+        g.DrawRectangle(pen, New Rectangle(New Point(X - pen.Width, Y - pen.Width), New Size(Size.Width - pen.Width * 2, Size.Height - pen.Width * 2)))
+    End Sub
     Overrides Sub Move()
         X += leftSpeed
         X += rightSpeed

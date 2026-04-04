@@ -64,7 +64,7 @@
     End Property
     Overridable Sub CheckHealth()
         If isAlive Then
-            outText("Object is Dead")
+            OutText("Object is Dead")
             Exit Sub
         End If
 
@@ -72,7 +72,7 @@
     Overridable Sub Move()
 
     End Sub
-    Overridable Sub DrawPolly(g As Graphics)
+    Overridable Sub DrawBounds(g As Graphics)
 
     End Sub
     Overridable Sub DrawImage(g As Graphics)

@@ -1,5 +1,4 @@
-﻿Imports System.Runtime.InteropServices.JavaScript.JSType
-
+﻿
 Module GameFunctions
     Enum EndGameEvent As UShort
         Shot
@@ -25,6 +24,9 @@ Module GameFunctions
     Friend enemyList As New List(Of EnemyShip)
     Friend gameBitmaps As New SortedList(Of String, Bitmap)
     Friend fontScore As New Font(FontFamily.GenericMonospace, 14)
+    Friend outOfCurrentAmmo As Boolean = False
+    Friend outOfAllAmmo As Boolean = False
+    Friend drawBounds As Boolean = False
     Public Sub StartGame()
         With Form1
             .TimerDraw.Start()
@@ -33,7 +35,7 @@ Module GameFunctions
             .TimerSpaceShipDir.Start()
             .TimerEnemySpawn.Start()
         End With
-        outText("Game Started")
+        OutText("Game Started")
     End Sub
     Public Sub PauseGame(Optional message As String = "", Optional title As String = "")
         With Form1
@@ -84,12 +86,13 @@ Module GameFunctions
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
-        tempEnemyList = GetEnemyList(enemyFactory.EnemyType.SpaceShipBig, 5)
+        tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBig, 5)
         enemyList.AddRange(tempEnemyList)
-        outText("Enimies Loaded")
+        OutText("Enimies Loaded")
     End Sub
     Public Sub LoadBitmaps()
         gameBitmaps = ImageLoader.Load()
+        OutText("Bitmap Images Loaded")
     End Sub
     Public Sub LoadPlayer()
         With player
@@ -97,26 +100,32 @@ Module GameFunctions
             .scale = 2
             .Size = gameBitmaps("heli").Size
             .Location = New PointF(Box.Left + .Size.Width, Box.Bottom \ 2 - .Size.Height)
-            .pen = Pens.IndianRed
+            .pen = New Pen(Brushes.Yellow) With {
+                .Width = 1}
             .Offset = New PointF(30, 9)
             .xSpeed = 16
             .ySpeed = 16
             .xSpeedMax = 30
             .ySpeedMax = 24
-            .ammoBulletBigList = GetAmmoList(ammoFactory.AmmoType.BulletBig, 9)
-            '.ammoRodList = GetAmmoList(AmmoFactory.AmmoType.Rod, 75)
-            .AmmoSelect(ammoFactory.AmmoType.BulletBig)
             'Select ammo as would GUI
-            'Finish allAmmo
-            '.allAmmo.Add(AmmoFactory.AmmoType.Rod, .ammoRodList)
-            player.ammoBulletBigList = GetAmmoList(ammoFactory.AmmoType.BulletBig, 9)
-            player.allAmmo.Add(ammoFactory.AmmoType.BulletBig, player.ammoBulletBigList)
-            player.AmmoSelect(ammoFactory.AmmoType.BulletBig)
             ''SELECT BULLET TO SHOOOT on ship
+            .ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 10)
+
         End With
-        ''' Testing '''
+        OutText("Player Created")
+        player.ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 9)
+        player.allAmmo.Add(AmmoFactory.AmmoType.Bullet, player.ammoBulletList)
+        player.allAmmo.Add(AmmoFactory.AmmoType.BulletBig, player.ammoBulletBigList)
+        player.AmmoSelect(AmmoFactory.AmmoType.BulletBig)
+
+        'must increment on ammo pickup
+        player.ammoTypeNumber = player.allAmmo.Count
+        OutText("Added Ammo to PLayer Ship")
+
+        'Testing
+        player.ammoAutoSelect = True
     End Sub
-    Public Sub outText(value As String)
+    Public Sub OutText(value As String)
         Form1.outDebug.AppendText(vbCrLf + value)
     End Sub
     Public Sub LoadData()
@@ -128,6 +137,7 @@ Module GameFunctions
         Box.Bottom = Form1.Bottom - (0.08 * Form1.Height)
         Box.Width = Form1.Width
         Box.Height = Form1.Height
+        OutText("Game Data Loaded")
     End Sub
     Public Function RandomY(size As SizeF) As PointF
         Dim y As Single
@@ -150,12 +160,7 @@ Module GameFunctions
             tempEnemyList.Add(enemyFactory.GetEnemy(GetRandomEnemy))
         Next
         Return tempEnemyList
-    End Function
-    Public Function GetRandomEnemy()
-        'how to automate finding number of enemies
-        Dim rndShip As Integer 'number of availble enenmies
-        rndShip = 2
-        Return enemyFactory.GetEnemy(RandomInteger(rndShip))
+        OutText("Created " + amount.ToString + tempEnemyList(0).name + "s")
     End Function
     Public Function GetEnemyList(type As EnemyFactory.EnemyType, amount As Short)
         Dim tempEnemyList As New List(Of EnemyShip)
@@ -163,43 +168,49 @@ Module GameFunctions
             tempEnemyList.Add(enemyFactory.GetEnemy(type))
         Next
         Return tempEnemyList
+        OutText("Created " + amount.ToString + tempEnemyList(0).name + "s")
+    End Function
+    Public Function GetRandomEnemy()
+        'how to automate finding number of enemies
+        Dim rndShip As Integer 'number of availble enenmies
+        rndShip = 2
+        Return enemyFactory.GetEnemy(RandomInteger(rndShip))
     End Function
     Public Function GetAmmo(type As AmmoFactory.AmmoType)
         Select Case type
-            Case ammoFactory.AmmoType.Bullet Or ammoFactory.AmmoType.BulletBig
+            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
                 Return ammoFactory.GetBullet(type)
-            Case ammoFactory.AmmoType.Rod Or ammoFactory.AmmoType.RodBig
+            Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
                 Return ammoFactory.GetRod(type)
                 'Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
                 'return ammoFactory.GetLaser(type)
         End Select
         Return Nothing
+        OutText("NOT created ammo!")
     End Function
     Public Function GetAmmoList(type As AmmoFactory.AmmoType, Number As Integer)
-        Case ammoFactory.AmmoType.Bullet Or ammoFactory.AmmoType.BulletBig
         Dim tempAmmoList As New List(Of Ammo)
-        Case ammoFactory.AmmoType.Bullet Or ammoFactory.AmmoType.BulletBig
-        Dim tempAmmoList As New List(Of AmmoBullet)
+        Select Case type
+      ' Small Bullet/Big Bullet
+            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetBullet(type))
                 Next
-                Return tempAmmoList
-                tempAmmoList = Nothing
-            Case ammoFactory.AmmoType.Rod Or ammoFactory.AmmoType.RodBig
-                Dim tempAmmoList As New List(Of AmmoRod)
+      ' Rod/Big Rod
+            Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetRod(type))
                 Next
-                Return tempAmmoList
-                tempAmmoList = Nothing
-            Case ammoFactory.AmmoType.LaserBlue Or ammoFactory.AmmoType.LaserGreen Or ammoFactory.AmmoType.LaserRed
-                Dim tempAmmoList As New List(Of AmmoLaser)
+      ' Blue Laser/Green Laser/Red Laser
+            Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
                 For I = 1 To Number
                     'tempAmmoList.Add(ammoFactory.GetLaser(type))
                 Next
-                Return tempAmmoList
-                tempAmmoList = Nothing
+            Case Else
+                Return Nothing
+                OutText("NOT created Ammo List!")
         End Select
-        Return Nothing
+        Return tempAmmoList
+        OutText("Created " + Number + " " + tempAmmoList(0).name + "s")
     End Function
 End Module

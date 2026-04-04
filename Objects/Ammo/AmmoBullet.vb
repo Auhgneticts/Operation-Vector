@@ -1,6 +1,6 @@
 ﻿Public Class AmmoBullet
     Inherits Ammo
-    Public Overrides Sub DrawPolly(g As Graphics)
+    Public Overrides Sub DrawBounds(g As Graphics)
         g.FillRectangle(New SolidBrush(pen.Color), Rectangle)
     End Sub
     Public Overrides Sub DrawImage(g As Graphics)

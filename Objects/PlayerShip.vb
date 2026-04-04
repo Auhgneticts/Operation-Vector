@@ -2,19 +2,18 @@
     Inherits Ship
     Private selectedAmmo As AmmoFactory.AmmoType
     Friend allAmmo As New SortedList(Of AmmoFactory.AmmoType, List(Of Ammo))
+    Friend ammoTypeNumber As Integer
     Friend ammoBulletBigList As New List(Of Ammo)
     Friend ammoBulletList As New List(Of Ammo)
     Friend ammoRodBigList As New List(Of Ammo)
     Friend ammoRodList As New List(Of Ammo)
-    Friend outOfCurrentAmmo As Boolean = False
-    Friend outOfAllAmmo As Boolean = False
     Friend ammoAutoSelect As Boolean = False
 
     Public Overrides Function GetAmmoAmount() As Integer
         Return ammoBulletBigList.Count
     End Function
     Public Sub AddAmmo(type As AmmoFactory.AmmoType, Amount As Integer)
-        Select Case selectedAmmo
+        Select Case type
             Case AmmoFactory.AmmoType.Bullet
                 ammoBulletList.Add(GameFunctions.ammoFactory.GetBullet(AmmoFactory.AmmoType.Bullet))
             Case AmmoFactory.AmmoType.BulletBig
@@ -29,14 +28,30 @@
         End Select
     End Sub
     Public Sub NextAmmoAvil()
-        'check out of ammo flag
+        'reset  flag
+        outOfCurrentAmmo = False
+        'next AmmoType
+        'NEED TO WALK PER GUN TREE
+        selectedAmmo += 1
+        If allAmmo(selectedAmmo).Count = 0 Then
+            outOfCurrentAmmo = True
+            selectedAmmo += 1
+        End If
+        'do more
         If outOfCurrentAmmo Then
-            'alert Out of Ammo
+            outText("Out of NEXT Ammo!")
+            ammoTypeNumber -= 1
+            Exit Sub
+        ElseIf ammoTypeNumber > 0 Then
+            'if ship has more ammo to use
+            outText("Swithing Ammo")
+            NextAmmoAvil()
+        ElseIf ammoTypeNumber = 0 Then
+            'if ship is completely out of ammo
+            outOfAllAmmo = True
+            outText("ALL ammo empty!")
             Exit Sub
         End If
-        selectedAmmo += 1
-        If allAmmo(selectedAmmo).Count = 0 Then selectedAmmo += 1
-        'do more
     End Sub
     Public Sub AmmoSelect(newAmmo As AmmoFactory.AmmoType)
         'If ammo.gunType = newAmmo.gunType ...
@@ -44,6 +59,10 @@
             Case AmmoFactory.AmmoType.BulletBig
                 If ammoBulletBigList.Count > 0 Then
                     selectedAmmo = AmmoFactory.AmmoType.BulletBig
+                End If
+            Case AmmoFactory.AmmoType.Bullet
+                If ammoBulletList.Count > 0 Then
+                    selectedAmmo = AmmoFactory.AmmoType.Bullet
                 End If
             Case AmmoFactory.AmmoType.Rod
                 If ammoRodList.Count > 0 Then
@@ -55,37 +74,30 @@
         If Not outOfCurrentAmmo Then
             Select Case selectedAmmo
                 Case AmmoFactory.AmmoType.Bullet
-                    'currentShot = allAmmo(AmmoFactory.AmmoType.Bullet).Last
                     If ammoBulletList.Count <> 0 Then
                         currentShot = ammoBulletList.Last
-                    Else
-                        outText("Out of Ammo" + ammoBulletList.ToString)
-                        Exit Select
+                        outText(ammoBulletList.Count.ToString + " " + ammoBulletList.First.name + " remaining")
+                        ammoBulletList.Remove(ammoBulletList.Last)
                     End If
-                'allAmmo(AmmoFactory.AmmoType.Bullet).Remove(allAmmo(AmmoFactory.AmmoType.Bullet).Last)
                 Case AmmoFactory.AmmoType.BulletBig
                     If ammoBulletBigList.Count <> 0 Then
                         currentShot = ammoBulletBigList.Last
                         outText(ammoBulletBigList.Count.ToString + " " + ammoBulletBigList.First.name + " remaining")
                         ammoBulletBigList.Remove(ammoBulletBigList.Last)
-                        currentShot.Location = OffsetLocation
-                        shotList.Add(currentShot)
-                        currentShot = Nothing
-                    Else
-                        outOfCurrentAmmo = True
-                        If ammoAutoSelect Then
-                            NextAmmoAvil()
-                        End If
-                        PauseGame("Out of Ammo", "Demo Done")
                     End If
+                Case Else
+                    outOfCurrentAmmo = True
             End Select
+            currentShot.Location = OffsetLocation
+            shotList.Add(currentShot)
+            currentShot = Nothing
+        ElseIf ammoAutoSelect Then
+            outText("out of current ammo!")
+            ' Switch ammo then shoot again.
+            NextAmmoAvil()
+            Shoot()
         End If
         currentShot = Nothing
-        End Select
-        End If
-        currentShot = Nothing
-        End Select
-        End If
     End Sub
     Public Sub Left()
         leftSpeed = xSpeed * -1
@@ -107,6 +119,10 @@
     End Sub
     Sub Draw(g As Graphics, image As String)
         g.DrawImage(gameBitmaps(image), Rectangle)
+    End Sub
+    Overrides Sub DrawBounds(g As Graphics)
+        'highlight bounding box
+        g.DrawRectangle(player.pen, player.Rectangle)
     End Sub
     Sub New()
     End Sub

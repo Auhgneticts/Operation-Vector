@@ -16,6 +16,8 @@
             '.ySpeed = RandomInteger(20)
             .ySpeed = .leftSpeed / -3
             .Location = RandomY(.Size * 2)
+            .pen = New Pen(Brushes.White) With {
+                .Width = 1}
         End With
         tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserRed, 2)
         Return tempEnemy
@@ -38,6 +40,8 @@
             .ySpeed = 2
             .leftSpeed = -3
             .Location = RandomY(.Size * 2)
+            .pen = New Pen(Brushes.CornflowerBlue) With {
+                .Width = 4}
         End With
         tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserBlue, 3)
         Return tempEnemy

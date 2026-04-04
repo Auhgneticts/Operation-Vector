@@ -2,8 +2,6 @@
     ''testing
     Dim qTime As TimeSpan
     Dim qStop, qStart As New DateTime
-    ''testing
-
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Hide()
         LoadData()
@@ -29,6 +27,8 @@
                 End
             Case Keys.S
                 PauseGame()
+            Case Keys.B
+                drawBounds = True
         End Select
     End Sub
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
@@ -54,11 +54,14 @@
 
         'Player Ship
         player.Draw(e.Graphics, "heli") 'create Player Bitmap and change name
+        'Draw bounding box if selected
+        If drawBounds Then player.DrawBounds(e.Graphics)
 
         'Enemy Ships
         If enemyList.Count > 0 Then
             For Each enemy As EnemyShip In enemyList
                 enemy.Draw(e.Graphics)
+                If drawBounds Then enemy.DrawBounds(e.Graphics)
                 If enemy.explode Then
                     enemy.DrawExplosion(e.Graphics)
                 End If
@@ -69,11 +72,13 @@
         If player.shotList.Count > 0 Then
             For Each shot As Ammo In player.shotList
                 shot.DrawImage(e.Graphics)
+                If drawBounds Then shot.DrawBounds(e.Graphics)
             Next
         End If
+
+        'HUD
         e.Graphics.DrawString(player.GetAmmoAmount, SystemFonts.DialogFont, Brushes.White, New Point(0, 0))
         e.Graphics.DrawString("Enemies " + enemyList.Count.ToString, SystemFonts.DialogFont, Brushes.White, New Point(0, 10))
-
         e.Graphics.DrawString("Microseconds processing game", SystemFonts.DialogFont, Brushes.LightYellow, New PointF(0, 20))
         e.Graphics.DrawString(qTime.Microseconds.ToString, SystemFonts.DialogFont, Brushes.LightYellow, New PointF(0, 30))
         e.Graphics.DrawString("Score " + Score.ToString, fontScore, Brushes.LightYellow, New PointF(0, 60))
@@ -84,7 +89,6 @@
     End Sub
     Private Sub TimerCheck_Tick(sender As Object, e As EventArgs) Handles TimerCheck.Tick
         qStart = DateAndTime.Now
-
         ''''
         ''' Evauate the SHIPs first
         ''' 

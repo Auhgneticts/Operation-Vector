@@ -67,10 +67,10 @@ Partial Class Form1
         outDebug.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         outDebug.BorderStyle = BorderStyle.None
         outDebug.Enabled = False
-        outDebug.Location = New Point(116, 1373)
+        outDebug.Location = New Point(116, 1408)
         outDebug.Multiline = True
         outDebug.Name = "outDebug"
-        outDebug.Size = New Size(687, 131)
+        outDebug.Size = New Size(687, 96)
         outDebug.TabIndex = 0
         ' 
         ' Form1
