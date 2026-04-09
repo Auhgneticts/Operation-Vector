@@ -50,7 +50,9 @@
         e.Graphics.PixelOffsetMode = Drawing2D.PixelOffsetMode.None
 
         'draw background
-        e.Graphics.DrawImage(gameBitmaps("desert"), 0, 0, Box.Right, Box.Bottom)
+        'TESTING
+        'sky_clouds_blue > desert
+        e.Graphics.DrawImage(gameBitmaps("skyCloudsBlue"), 0, 0, Box.Right, Box.Bottom)
 
         'Player Ship
         player.Draw(e.Graphics, "heli") 'create Player Bitmap and change name
@@ -77,17 +79,13 @@
         End If
 
         'HUD
-        e.Graphics.DrawString(player.GetAmmoAmount, SystemFonts.DialogFont, Brushes.White, New Point(0, 0))
-        e.Graphics.DrawString("Enemies " + enemyList.Count.ToString, SystemFonts.DialogFont, Brushes.White, New Point(0, 10))
-        e.Graphics.DrawString("Microseconds processing game", SystemFonts.DialogFont, Brushes.LightYellow, New PointF(0, 20))
-        e.Graphics.DrawString(qTime.Microseconds.ToString, SystemFonts.DialogFont, Brushes.LightYellow, New PointF(0, 30))
-        e.Graphics.DrawString("Score " + Score.ToString, fontScore, Brushes.LightYellow, New PointF(0, 60))
+        e.Graphics.DrawString("Current Ammo Count  " + player.GetAmmoAmount.ToString, fontScore, Brushes.Yellow, New Point(0, 0))
+        e.Graphics.DrawString("Enemies  " + enemyList.Count.ToString, fontScore, Brushes.Yellow, New Point(0, 20))
+        e.Graphics.DrawString("Frame Time  " + qTime.Microseconds.ToString, fontScore, Brushes.Yellow, New PointF(0, 40))
+        e.Graphics.DrawString("Score  " + Score.ToString, fontScore, Brushes.LightYellow, New PointF(0, 60))
 
     End Sub
-    Private Sub TimerDraw_Tick(sender As Object, e As EventArgs) Handles TimerDraw.Tick
-        Me.Invalidate()
-    End Sub
-    Private Sub TimerCheck_Tick(sender As Object, e As EventArgs) Handles TimerCheck.Tick
+    Private Sub Checks()
         qStart = DateAndTime.Now
         ''''
         ''' Evauate the SHIPs first
@@ -100,9 +98,11 @@
                         'As itterator
                         If playerShot.Rectangle.IntersectsWith(enemy.Rectangle) Then
                             Score += enemy.baseScore * enemy.scoreMulti
+                            'remove shot after hit
+                            playerShot.isAlive = False
                             enemy.explode = True
                         End If
-                        If playerShot.X > Box.Right Then
+                        If playerShot.isAlive Or playerShot.X > Box.Right Then
                             player.shotList.RemoveAt(player.shotList.IndexOf(playerShot))
                             Exit Sub
                         End If
@@ -131,7 +131,7 @@
         qStop = DateAndTime.Now
         qTime = qStop - qStart
     End Sub
-    Private Sub TimerMove_Tick(sender As Object, e As EventArgs) Handles TimerMove.Tick
+    Private Sub Moves()
         player.Move()
         If player.shotList.Count > 0 Then
             For Each shot In player.shotList
@@ -143,6 +143,11 @@
                 enemy.Move()
             Next
         End If
+    End Sub
+    Private Sub TimerDraw_Tick(sender As Object, e As EventArgs) Handles TimerDraw.Tick
+        Moves()
+        Me.Invalidate()
+        Checks()
     End Sub
     Private Sub TimerSpaceShipDirection_Tick(sender As Object, e As EventArgs) Handles TimerSpaceShipDir.Tick
         'TODO
@@ -158,9 +163,5 @@
         Dim tempEnemyList As List(Of EnemyShip)
         tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBig, RandomInteger(6))
         enemyList.AddRange(tempEnemyList.AsEnumerable)
-    End Sub
-
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs)
-
     End Sub
 End Class

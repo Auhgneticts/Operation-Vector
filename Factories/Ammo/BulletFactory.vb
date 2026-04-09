@@ -8,6 +8,7 @@ Class BulletFactory
             .scale = 5
             .xSpeed = 25
             .Size = gameBitmaps("bullet").Size
+            .pen = Pens.Yellow
         End With
         Return tempBullet
         tempBullet = Nothing
@@ -20,6 +21,7 @@ Class BulletFactory
             .scale = 3
             .xSpeed = 40
             .Size = gameBitmaps("bullet").Size
+            .pen = Pens.Yellow
         End With
         Return tempBullet
         tempBullet = Nothing

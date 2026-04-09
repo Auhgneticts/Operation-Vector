@@ -24,8 +24,6 @@ Partial Class Form1
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         TimerDraw = New Timer(components)
-        TimerCheck = New Timer(components)
-        TimerMove = New Timer(components)
         TimerSpaceShipDir = New Timer(components)
         TimerEnemySpawn = New Timer(components)
         Label1 = New Label()
@@ -35,15 +33,6 @@ Partial Class Form1
         ' TimerDraw
         ' 
         TimerDraw.Interval = 15
-        ' 
-        ' TimerCheck
-        ' 
-        TimerCheck.Enabled = True
-        TimerCheck.Interval = 8
-        ' 
-        ' TimerMove
-        ' 
-        TimerMove.Interval = 15
         ' 
         ' TimerSpaceShipDir
         ' 
@@ -56,18 +45,20 @@ Partial Class Form1
         ' 
         Label1.AutoSize = True
         Label1.Dock = DockStyle.Bottom
-        Label1.Location = New Point(0, 1424)
+        Label1.ForeColor = SystemColors.Info
+        Label1.Location = New Point(0, 1404)
         Label1.Name = "Label1"
-        Label1.Size = New Size(110, 80)
+        Label1.Size = New Size(156, 100)
         Label1.TabIndex = 0
-        Label1.Text = "HUD area" & vbCrLf & "ESC = quit" & vbCrLf & "Arrows = move" & vbCrLf & "Space = Fire"
+        Label1.Text = "ESC      = Quit" & vbCrLf & "Arrows = Move" & vbCrLf & "Space  = Fire" & vbCrLf & " S        = Hold to Stop" & vbCrLf & "B         = Draw Bounds" & vbCrLf
         ' 
         ' outDebug
         ' 
         outDebug.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         outDebug.BorderStyle = BorderStyle.None
         outDebug.Enabled = False
-        outDebug.Location = New Point(116, 1408)
+        outDebug.Font = New Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        outDebug.Location = New Point(162, 1408)
         outDebug.Multiline = True
         outDebug.Name = "outDebug"
         outDebug.Size = New Size(687, 96)
@@ -98,8 +89,6 @@ Partial Class Form1
     End Sub
 
     Friend WithEvents TimerDraw As Timer
-    Friend WithEvents TimerCheck As Timer
-    Friend WithEvents TimerMove As Timer
     Friend WithEvents TimerSpaceShipDir As Timer
     Friend WithEvents TimerEnemySpawn As Timer
     Friend WithEvents Label1 As Label

@@ -23,15 +23,13 @@ Module GameFunctions
     Friend ammoFactory As New AmmoFactory
     Friend enemyList As New List(Of EnemyShip)
     Friend gameBitmaps As New SortedList(Of String, Bitmap)
-    Friend fontScore As New Font(FontFamily.GenericMonospace, 14)
+    Friend fontScore As New Font(FontFamily.GenericMonospace, 14, FontStyle.Bold)
     Friend outOfCurrentAmmo As Boolean = False
     Friend outOfAllAmmo As Boolean = False
     Friend drawBounds As Boolean = False
     Public Sub StartGame()
         With Form1
             .TimerDraw.Start()
-            .TimerMove.Start()
-            .TimerCheck.Start()
             .TimerSpaceShipDir.Start()
             .TimerEnemySpawn.Start()
         End With
@@ -39,10 +37,9 @@ Module GameFunctions
     End Sub
     Public Sub PauseGame(Optional message As String = "", Optional title As String = "")
         With Form1
+            .TimerDraw.Stop()
             .TimerSpaceShipDir.Stop()
             .TimerEnemySpawn.Stop()
-            .TimerMove.Stop()
-            .TimerCheck.Stop()
         End With
         If message <> Nothing Then
             MsgBox(message, MsgBoxStyle.Information, title)
@@ -50,10 +47,9 @@ Module GameFunctions
     End Sub
     Public Sub UnpauseGame()
         With Form1
+            .TimerDraw.Start()
             .TimerSpaceShipDir.Start()
             .TimerEnemySpawn.Start()
-            .TimerMove.Start()
-            .TimerCheck.Start()
         End With
     End Sub
     Public Sub EndGame(endEvent As EndGameEvent, Optional ship As Ship = Nothing, Optional enemy As EnemyShip = Nothing, Optional ammoName As String = "")
@@ -76,8 +72,6 @@ Module GameFunctions
     Public Sub SetupTimers()
         With Form1
             .TimerDraw.Interval = 15
-            .TimerMove.Interval = 15
-            .TimerCheck.Interval = 15
 
             'make Varibles
             .TimerSpaceShipDir.Interval = 200
@@ -109,11 +103,10 @@ Module GameFunctions
             .ySpeedMax = 24
             'Select ammo as would GUI
             ''SELECT BULLET TO SHOOOT on ship
-            .ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 10)
-
+            .ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 220)
         End With
         OutText("Player Created")
-        player.ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 9)
+        player.ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 100)
         player.allAmmo.Add(AmmoFactory.AmmoType.Bullet, player.ammoBulletList)
         player.allAmmo.Add(AmmoFactory.AmmoType.BulletBig, player.ammoBulletBigList)
         player.AmmoSelect(AmmoFactory.AmmoType.BulletBig)
