@@ -4,8 +4,8 @@
     Dim qStop, qStart As New DateTime
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Hide()
-        LoadData()
         LoadBitmaps()
+        LoadData()
         LoadPlayer()
         LoadEnemies()
         SetupTimers()
@@ -52,7 +52,8 @@
         'draw background
         'TESTING
         'sky_clouds_blue > desert
-        e.Graphics.DrawImage(gameBitmaps("skyCloudsBlue"), 0, 0, Box.Right, Box.Bottom)
+        e.Graphics.DrawImage(gameBitmaps("skyCloudsBlue"), backgroundRects.DestRect, backgroundRects.SourceRect, GraphicsUnit.Pixel)
+        'e.Graphics.DrawImage(gameBitmaps("skyCloudsBlue"), 0, 0, Box.Right, Box.Bottom)
 
         'Player Ship
         player.Draw(e.Graphics, "heli") 'create Player Bitmap and change name
@@ -143,6 +144,12 @@
                 enemy.Move()
             Next
         End If
+        'testing moving clouds background
+        'get a portion of the player's X and Y speed
+        'to translate the background image
+        'ADD in Checks loop around image
+        backgroundRects.SourceRect.X += (player.leftSpeed + player.rightSpeed) * 0.006
+        backgroundRects.SourceRect.Y += (player.upSpeed + player.downSpeed) * 0.003
     End Sub
     Private Sub TimerDraw_Tick(sender As Object, e As EventArgs) Handles TimerDraw.Tick
         Moves()
@@ -158,7 +165,6 @@
             End If
         Next
     End Sub
-
     Private Sub TimerEnemySpawn_Tick(sender As Object, e As EventArgs) Handles TimerEnemySpawn.Tick
         Dim tempEnemyList As List(Of EnemyShip)
         tempEnemyList = GetEnemyList(EnemyFactory.EnemyType.SpaceShipBig, RandomInteger(6))

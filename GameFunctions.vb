@@ -13,6 +13,10 @@ Module GameFunctions
         Dim Width As Integer
         Dim Height As Integer
     End Structure
+    Structure BackRects
+        Dim DestRect As RectangleF
+        Dim SourceRect As RectangleF
+    End Structure
     Private dataPath As String = ""
     Friend Const TimeFastExplosionMicro = 75
     Friend globalScale As Integer
@@ -27,6 +31,7 @@ Module GameFunctions
     Friend outOfCurrentAmmo As Boolean = False
     Friend outOfAllAmmo As Boolean = False
     Friend drawBounds As Boolean = False
+    Friend backgroundRects As BackRects
     Public Sub StartGame()
         With Form1
             .TimerDraw.Start()
@@ -124,6 +129,7 @@ Module GameFunctions
     Public Sub LoadData()
         dataPath = My.Application.Info.DirectoryPath + "data"
         globalScale = 2
+        'Fix this
         Box.Right = Form1.Right
         Box.Left = Form1.Left
         Box.Top = Form1.Top
@@ -131,6 +137,10 @@ Module GameFunctions
         Box.Width = Form1.Width
         Box.Height = Form1.Height
         OutText("Game Data Loaded")
+        Dim tempLocation As New PointF((gameBitmaps("skyCloudsBlue").Height \ 2) - 45, (gameBitmaps("skyCloudsBlue").Width * 0.5) - 80)
+        'get ratio from scren size
+        backgroundRects.SourceRect = New RectangleF(tempLocation, New Size(160, 90))
+        backgroundRects.DestRect = New RectangleF(New PointF(0, 0), Form1.Size)
     End Sub
     Public Function RandomY(size As SizeF) As PointF
         Dim y As Single
