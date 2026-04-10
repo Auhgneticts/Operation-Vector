@@ -14,9 +14,9 @@
     Public Function GetBullet(Type As AmmoType) As AmmoBullet
         Select Case Type
             Case AmmoType.Bullet
-                Return MakeBullet.GetSmall
+                Return MakeBullet.GetBullet
             Case AmmoType.BulletBig
-                Return MakeBullet.GetBig
+                Return MakeBullet.GetBigBullet
             Case Else
                 Return Nothing
         End Select

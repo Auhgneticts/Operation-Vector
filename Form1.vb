@@ -103,7 +103,7 @@
                             playerShot.isAlive = False
                             enemy.explode = True
                         End If
-                        If playerShot.isAlive Or playerShot.X > Box.Right Then
+                        If playerShot.isAlive = False Or playerShot.X > Box.Right Then
                             player.shotList.RemoveAt(player.shotList.IndexOf(playerShot))
                             Exit Sub
                         End If

@@ -28,30 +28,10 @@
         End Select
     End Sub
     Public Sub NextAmmoAvil()
-        'reset  flag
+        '''TESTING
+        '''
+        selectedAmmo = 0
         outOfCurrentAmmo = False
-        'next AmmoType
-        'NEED TO WALK PER GUN TREE
-        selectedAmmo += 1
-        If allAmmo(selectedAmmo).Count = 0 Then
-            outOfCurrentAmmo = True
-            selectedAmmo += 1
-        End If
-        'do more
-        If outOfCurrentAmmo Then
-            outText("Out of NEXT Ammo!")
-            ammoTypeNumber -= 1
-            Exit Sub
-        ElseIf ammoTypeNumber > 0 Then
-            'if ship has more ammo to use
-            outText("Swithing Ammo")
-            NextAmmoAvil()
-        ElseIf ammoTypeNumber = 0 Then
-            'if ship is completely out of ammo
-            outOfAllAmmo = True
-            outText("ALL ammo empty!")
-            Exit Sub
-        End If
     End Sub
     Public Sub AmmoSelect(newAmmo As AmmoFactory.AmmoType)
         'If ammo.gunType = newAmmo.gunType ...
@@ -64,10 +44,10 @@
                 If ammoBulletList.Count > 0 Then
                     selectedAmmo = AmmoFactory.AmmoType.Bullet
                 End If
-            Case AmmoFactory.AmmoType.Rod
-                If ammoRodList.Count > 0 Then
-                    selectedAmmo = AmmoFactory.AmmoType.Rod
-                End If
+                'Case AmmoFactory.AmmoType.Rod
+                '    If ammoRodList.Count > 0 Then
+                '        selectedAmmo = AmmoFactory.AmmoType.Rod
+                '    End If
         End Select
     End Sub
     Public Sub Shoot()
@@ -78,12 +58,22 @@
                         currentShot = ammoBulletList.Last
                         outText(ammoBulletList.Count.ToString + " " + ammoBulletList.First.name + " remaining")
                         ammoBulletList.Remove(ammoBulletList.Last)
+                    Else
+                        '
+                        'remove empty ammo list frmo allAmmo
+                        outOfCurrentAmmo = True
+                        allAmmo.RemoveAt(selectedAmmo)
+                        Exit Sub
                     End If
                 Case AmmoFactory.AmmoType.BulletBig
                     If ammoBulletBigList.Count <> 0 Then
                         currentShot = ammoBulletBigList.Last
                         outText(ammoBulletBigList.Count.ToString + " " + ammoBulletBigList.First.name + " remaining")
                         ammoBulletBigList.Remove(ammoBulletBigList.Last)
+                    Else
+                        outOfCurrentAmmo = True
+                        allAmmo.RemoveAt(selectedAmmo)
+                        Exit Sub
                     End If
                 Case Else
                     outOfCurrentAmmo = True

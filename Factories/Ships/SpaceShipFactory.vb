@@ -19,7 +19,7 @@
             .pen = New Pen(Brushes.White) With {
                 .Width = 1}
         End With
-        tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserRed, 2)
+        'tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserRed, 2)
         Return tempEnemy
         tempEnemy = Nothing
     End Function
@@ -43,7 +43,7 @@
             .pen = New Pen(Brushes.CornflowerBlue) With {
                 .Width = 4}
         End With
-        tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserBlue, 3)
+        'tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserBlue, 3)
         Return tempEnemy
         tempEnemy = Nothing
     End Function

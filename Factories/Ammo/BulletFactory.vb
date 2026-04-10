@@ -1,10 +1,10 @@
 ﻿
 Class BulletFactory
-    Public Function GetBig() As AmmoBullet
+    Public Function GetBigBullet() As AmmoBullet
         Dim tempBullet As New AmmoBullet
         With tempBullet
             .name = "Big Bullet"
-            .isAlive = False
+            .isAlive = True
             .scale = 5
             .xSpeed = 25
             .Size = gameBitmaps("bullet").Size
@@ -13,11 +13,11 @@ Class BulletFactory
         Return tempBullet
         tempBullet = Nothing
     End Function
-    Public Function GetSmall() As AmmoBullet
+    Public Function GetBullet() As AmmoBullet
         Dim tempBullet As New AmmoBullet
         With tempBullet
             .name = "Small Bullet"
-            .isAlive = False
+            .isAlive = True
             .scale = 3
             .xSpeed = 40
             .Size = gameBitmaps("bullet").Size

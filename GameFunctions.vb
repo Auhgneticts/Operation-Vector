@@ -33,28 +33,40 @@ Module GameFunctions
     Friend drawBounds As Boolean = False
     Friend backgroundRects As BackRects
     Public Sub StartGame()
+        StartTimers()
+        OutText("Game Started")
+    End Sub
+    Public Sub PauseGame(Optional message As String = "", Optional title As String = "")
+        StopTimers()
+        If message <> Nothing Then
+            MsgBox(message, MsgBoxStyle.Information, title)
+        End If
+        OutText("Game Paused")
+    End Sub
+    Public Sub UnpauseGame()
+        StartTimers()
+        OutText("Game Unpaused")
+    End Sub
+    Public Sub SetupTimers()
+        With Form1
+            .TimerDraw.Interval = 15
+            'make Varibles
+            .TimerSpaceShipDir.Interval = 200
+            .TimerEnemySpawn.Interval = 3000
+        End With
+    End Sub
+    Public Sub StartTimers()
         With Form1
             .TimerDraw.Start()
             .TimerSpaceShipDir.Start()
             .TimerEnemySpawn.Start()
         End With
-        OutText("Game Started")
     End Sub
-    Public Sub PauseGame(Optional message As String = "", Optional title As String = "")
+    Public Sub StopTimers()
         With Form1
             .TimerDraw.Stop()
             .TimerSpaceShipDir.Stop()
             .TimerEnemySpawn.Stop()
-        End With
-        If message <> Nothing Then
-            MsgBox(message, MsgBoxStyle.Information, title)
-        End If
-    End Sub
-    Public Sub UnpauseGame()
-        With Form1
-            .TimerDraw.Start()
-            .TimerSpaceShipDir.Start()
-            .TimerEnemySpawn.Start()
         End With
     End Sub
     Public Sub EndGame(endEvent As EndGameEvent, Optional ship As Ship = Nothing, Optional enemy As EnemyShip = Nothing, Optional ammoName As String = "")
@@ -73,15 +85,6 @@ Module GameFunctions
                     End
                 End If
         End Select
-    End Sub
-    Public Sub SetupTimers()
-        With Form1
-            .TimerDraw.Interval = 15
-
-            'make Varibles
-            .TimerSpaceShipDir.Interval = 200
-            .TimerEnemySpawn.Interval = 3000
-        End With
     End Sub
     Public Sub LoadEnemies()
         Dim tempEnemyList As List(Of EnemyShip)
@@ -106,20 +109,17 @@ Module GameFunctions
             .ySpeed = 16
             .xSpeedMax = 30
             .ySpeedMax = 24
-            'Select ammo as would GUI
-            ''SELECT BULLET TO SHOOOT on ship
-            .ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 220)
         End With
         OutText("Player Created")
-        player.ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 100)
+        player.ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 20)
+        player.ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 10)
         player.allAmmo.Add(AmmoFactory.AmmoType.Bullet, player.ammoBulletList)
         player.allAmmo.Add(AmmoFactory.AmmoType.BulletBig, player.ammoBulletBigList)
+        'Select ammo as would GUI
+        ''SELECT BULLET TO SHOOOT on ship
         player.AmmoSelect(AmmoFactory.AmmoType.BulletBig)
-
-        'must increment on ammo pickup
         player.ammoTypeNumber = player.allAmmo.Count
         OutText("Added Ammo to PLayer Ship")
-
         'Testing
         player.ammoAutoSelect = True
     End Sub
@@ -195,7 +195,7 @@ Module GameFunctions
         Dim tempAmmoList As New List(Of Ammo)
         Select Case type
       ' Small Bullet/Big Bullet
-            Case AmmoFactory.AmmoType.Bullet Or AmmoFactory.AmmoType.BulletBig
+            Case AmmoFactory.AmmoType.Bullet, AmmoFactory.AmmoType.BulletBig
                 For I = 1 To Number
                     tempAmmoList.Add(ammoFactory.GetBullet(type))
                 Next
@@ -214,6 +214,7 @@ Module GameFunctions
                 OutText("NOT created Ammo List!")
         End Select
         Return tempAmmoList
+        tempAmmoList = Nothing
         OutText("Created " + Number + " " + tempAmmoList(0).name + "s")
     End Function
 End Module
