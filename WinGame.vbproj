@@ -83,31 +83,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="bitbin\boom-0.bmp">
+    <Content Include="bitbin\Boom-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="bitbin\bullet-0.bmp">
+    <Content Include="bitbin\Bullet-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="bitbin\haunebu-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="bitbin\heli-0.bmp">
+    <Content Include="bitbin\Heli-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="bitbin\powerGray-0.bmp">
+    <Content Include="bitbin\PowerGray-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="bitbin\saucerBig-0.bmp">
+    <Content Include="bitbin\SaucerBig-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="bitbin\saucerSmall-0.bmp">
+    <Content Include="bitbin\SaucerSmall-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="bitbin\ship-0.bmp">
+    <Content Include="bitbin\Ship-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="bitbin\skyCloudsBlue-0.bmp">
+    <Content Include="bitbin\SkyCloudsBlue-0.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -10,6 +10,7 @@
     Friend tSpan As TimeSpan
     Friend grow As Single = 1
     Public leftSpeed, rightSpeed, upSpeed, downSpeed As Single
+
     Public Sub DrawExplosion(g As Graphics)
         ''' if slow think of global
         If boomStart = False Then
@@ -17,7 +18,7 @@
             boomStart = True
         End If
         'create and add different offsets
-        g.DrawImage(gameBitmaps("boom"), New RectangleF(Location, gameBitmaps("boom").Size * grow))
+        g.DrawImage(gameBitmaps("Boom"), New RectangleF(Location, gameBitmaps("Boom").Size * grow))
         grow += 0.4
         tStop = DateAndTime.Now
         Dim tSpan As TimeSpan = tStop - tStart
@@ -40,9 +41,4 @@
     Overrides Sub Move()
 
     End Sub
-    Overridable Function GetAmmoAmount() As Integer
-        Return Nothing
-        outText("Not Implimented in Ship/GetAmmoAmount::Exiting Function")
-    End Function
-
 End Class

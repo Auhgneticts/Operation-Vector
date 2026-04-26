@@ -2,11 +2,11 @@
     Public Function GetBigShooter() As EnemyShip
         Dim tempEnemy As New SpaceShip
         With tempEnemy
-            .imageName = "saucerBig"
+            .imageName = "SaucerBig"
             .scale = 2
             .Size = gameBitmaps(.imageName).Size
             .shooter = True
-            .name = "Space ship big shooter"
+            .name = "large space ship"
             .isAlive = True
             .scoreMulti = 1
             .baseScore = 50
@@ -16,7 +16,7 @@
             '.ySpeed = RandomInteger(20)
             .ySpeed = .leftSpeed / -3
             .Location = RandomY(.Size * 2)
-            .pen = New Pen(Brushes.White) With {
+            .pen = New Pen(Brushes.Red) With {
                 .Width = 1}
         End With
         'tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserRed, 2)
@@ -27,10 +27,11 @@
     Public Function GetSmallShooter() As EnemyShip
         Dim tempEnemy As New SpaceShip
         With tempEnemy
+            .imageName = "saucerSmall"
             .scale = 1
             .Size = gameBitmaps(.imageName).Size
             .shooter = True
-            .name = "Space Ship small shooter"
+            .name = "small space ship"
             .isAlive = True
             .scoreMulti = 1
             .baseScore = 25
@@ -40,8 +41,8 @@
             .ySpeed = 2
             .leftSpeed = -3
             .Location = RandomY(.Size * 2)
-            .pen = New Pen(Brushes.CornflowerBlue) With {
-                .Width = 4}
+            .pen = New Pen(Brushes.Red) With {
+                .Width = 1}
         End With
         'tempEnemy.ammoLaserList = GetAmmoList(AmmoFactory.AmmoType.LaserBlue, 3)
         Return tempEnemy

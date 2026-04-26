@@ -1,62 +1,11 @@
 ﻿Public Class PlayerShip
     Inherits Ship
-    Private selectedAmmo As AmmoFactory.AmmoType
-    Friend allAmmo As New SortedList(Of AmmoFactory.AmmoType, List(Of Ammo))
-    Friend ammoTypeNumber As Integer
-    Friend ammoBulletBigList As New List(Of Ammo)
-    Friend ammoBulletList As New List(Of Ammo)
-    Friend ammoRodBigList As New List(Of Ammo)
-    Friend ammoRodList As New List(Of Ammo)
-    Friend ammoAutoSelect As Boolean = False
-
-    Public Overrides Function GetAmmoAmount() As Integer
-        Return ammoBulletBigList.Count
-    End Function
-    Public Sub AddAmmo(type As AmmoFactory.AmmoType, Amount As Integer)
-        Select Case type
-            Case AmmoFactory.AmmoType.Bullet
-                ammoBulletList.Add(GameFunctions.ammoFactory.GetBullet(AmmoFactory.AmmoType.Bullet))
-            Case AmmoFactory.AmmoType.BulletBig
-                ammoBulletBigList.Add(GameFunctions.ammoFactory.GetBullet(AmmoFactory.AmmoType.BulletBig))
-            Case AmmoFactory.AmmoType.Rod
-                ammoRodList.Add(GameFunctions.ammoFactory.GetRod(AmmoFactory.AmmoType.Rod))
-            Case AmmoFactory.AmmoType.RodBig
-                ammoRodBigList.Add(GameFunctions.ammoFactory.GetRod(AmmoFactory.AmmoType.RodBig))
-            Case AmmoFactory.AmmoType.LaserBlue
-            Case AmmoFactory.AmmoType.LaserGreen
-            Case AmmoFactory.AmmoType.LaserRed
-        End Select
-    End Sub
-    Public Sub NextAmmoAvil()
-        '''TESTING
-        '''
-        selectedAmmo = 0
-        outOfCurrentAmmo = False
-    End Sub
-    Public Sub AmmoSelect(newAmmo As AmmoFactory.AmmoType)
-        'If ammo.gunType = newAmmo.gunType ...
-        Select Case newAmmo
-            Case AmmoFactory.AmmoType.BulletBig
-                If ammoBulletBigList.Count > 0 Then
-                    selectedAmmo = AmmoFactory.AmmoType.BulletBig
-                End If
-            Case AmmoFactory.AmmoType.Bullet
-                If ammoBulletList.Count > 0 Then
-                    selectedAmmo = AmmoFactory.AmmoType.Bullet
-                End If
-                'Case AmmoFactory.AmmoType.Rod
-                '    If ammoRodList.Count > 0 Then
-                '        selectedAmmo = AmmoFactory.AmmoType.Rod
-                '    End If
-        End Select
-    End Sub
     Public Sub Shoot()
         If Not outOfCurrentAmmo Then
             Select Case selectedAmmo
                 Case AmmoFactory.AmmoType.Bullet
                     If ammoBulletList.Count <> 0 Then
                         currentShot = ammoBulletList.Last
-                        outText(ammoBulletList.Count.ToString + " " + ammoBulletList.First.name + " remaining")
                         ammoBulletList.Remove(ammoBulletList.Last)
                     Else
                         '
@@ -68,7 +17,6 @@
                 Case AmmoFactory.AmmoType.BulletBig
                     If ammoBulletBigList.Count <> 0 Then
                         currentShot = ammoBulletBigList.Last
-                        outText(ammoBulletBigList.Count.ToString + " " + ammoBulletBigList.First.name + " remaining")
                         ammoBulletBigList.Remove(ammoBulletBigList.Last)
                     Else
                         outOfCurrentAmmo = True
@@ -83,10 +31,10 @@
             currentShot = Nothing
         ElseIf ammoAutoSelect Then
             outText("out of current ammo!")
-            ' Switch ammo then shoot again.
+
             NextAmmoAvil()
-            Shoot()
         End If
+        UpdateHudValues("ammo")
         currentShot = Nothing
     End Sub
     Public Sub Left()

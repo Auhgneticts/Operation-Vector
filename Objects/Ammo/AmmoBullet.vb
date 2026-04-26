@@ -4,9 +4,12 @@
         g.DrawRectangle(pen, Rectangle)
     End Sub
     Public Overrides Sub DrawImage(g As Graphics)
-        g.DrawImage(gameBitmaps("bullet"), Rectangle)
+        g.DrawImage(gameBitmaps("Bullet"), Rectangle)
     End Sub
     Public Overrides Sub Move()
         X += xSpeed
+        If X > Box.Right Then
+            MyBase.isAlive = False
+        End If
     End Sub
 End Class

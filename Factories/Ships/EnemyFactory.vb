@@ -21,6 +21,26 @@
                 Return Nothing
         End Select
     End Function
-    ''' Only ship making and geting here
-    ''' Multi and list making..LOADING  goes into GameFunctions
+    Public Function GetEnemyList(amount As Short)
+        Dim tempEnemyList As New List(Of EnemyShip)
+        For i = 1 To amount
+            tempEnemyList.Add(GetEnemy(GetRandomEnemy))
+        Next
+        Return tempEnemyList
+        OutText("Created " + amount.ToString + tempEnemyList(0).name + "s")
+    End Function
+    Public Function GetEnemyList(type As EnemyType, amount As Short)
+        Dim tempEnemyList As New List(Of EnemyShip)
+        For i = 1 To amount
+            tempEnemyList.Add(GetEnemy(type))
+        Next
+        Return tempEnemyList
+        OutText("Created " + amount.ToString + tempEnemyList(0).name + "s")
+    End Function
+    Public Function GetRandomEnemy()
+        'how to automate finding number of enemies
+        Dim rndShip As Integer 'number of availble enenmies
+        rndShip = 2
+        Return GetEnemy(RandomInteger(rndShip))
+    End Function
 End Class

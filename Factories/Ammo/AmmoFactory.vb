@@ -1,5 +1,5 @@
 ﻿Public Class AmmoFactory
-    Enum AmmoType As Short
+    Enum AmmoType As UInteger
         Bullet
         BulletBig
         Rod
@@ -8,7 +8,6 @@
         LaserGreen
         LaserBlue
     End Enum
-
     Private ReadOnly MakeBullet As New BulletFactory
     Private ReadOnly MakeRod As New RodFactory
     Public Function GetBullet(Type As AmmoType) As AmmoBullet
@@ -31,4 +30,5 @@
                 Return Nothing
         End Select
     End Function
+
 End Class

@@ -5,7 +5,7 @@
     Friend weight As Integer ' -1 do not evaluate
     Friend health As Integer ' -1 for Indestructable do not evaluate
     Friend imageName As String
-    Friend scale As Integer
+    Friend scale As UInteger
     Friend moveSpeed As Double
     Friend xSpeed, ySpeed As Integer
     Friend xSpeedMax, ySpeedMax As Double
