@@ -18,6 +18,24 @@
         X += rightSpeed
         Y += upSpeed
         Y += downSpeed
+
+        If Rectangle.IntersectsWith(player.Rectangle) Then
+            explode = True
+            'TODO
+            'player.explode
+            EndGame(EndGameEvent.Collision, , MyBase.name)
+            Exit Sub
+        End If
+        If X < Box.Left - Size.Width Then
+            Score_Int -= baseScore * scoreMulti
+            isAlive = False
+        End If
     End Sub
+    Public Overrides Function CheckAmmo()
+        If AmmoEnemy.Count > 0 Then
+            Return AmmoEnemy.Count
+        Else Return 0
+        End If
+    End Function
     MustOverride Sub ChangeDirection()
 End Class

@@ -1,15 +1,14 @@
 ﻿Imports WinGame.GameFunctions
+Imports WinGame.GameData
 Imports WinGame.GameAmmo
 Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Hide()
         LoadBitmaps()
-        LoadData()
-
-        'LoadEnemies()
-
+        LoadWorld()
+        LoadFonts()
+        LoadEnemies()
         LoadPowerUps()
-
         LoadPlayer()
         SetupTimers()
         StartGame()
@@ -31,7 +30,11 @@ Public Class Form1
             Case Keys.S
                 PauseGame()
             Case Keys.B
-                drawBounds = True
+                If drawBounds Then
+                    drawBounds = False
+                Else
+                    drawBounds = True
+                End If
         End Select
     End Sub
     Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
@@ -88,52 +91,16 @@ Public Class Form1
                 If drawBounds Then power.DrawBounds(e.Graphics)
             Next
         End If
+
         'HUD
-        e.Graphics.DrawString("Current Ammo Count  " + GetAmmoString.ToString, fontScore, Brushes.Yellow, New Point(0, 0))
-        e.Graphics.DrawString("Enemies  " + enemyList.Count.ToString, fontScore, Brushes.Yellow, New Point(0, 20))
-        e.Graphics.DrawString("Frame Time  " + qTime.Microseconds.ToString, fontScore, Brushes.Yellow, New PointF(0, 40))
-        'e.Graphics.DrawString("Score  " + Score.ToString, fontScore, Brushes.LightYellow, New PointF(0, 60))
-        If player.shotList.Count > 0 Then
-            e.Graphics.DrawString("Score  " + player.shotList.Count.ToString, fontScore, Brushes.LightYellow, New PointF(0, 60))
-        End If
+        DrawHUD(e.Graphics)
 
     End Sub
     Private Sub Checks()
-        qStart = DateAndTime.Now
 
-        'player BULLETS vs enemy SHIPS
-        If player.shotList.Count > 0 Then
-            For Each playerShot As Ammo In player.shotList
+        'Objects carry their own checks
 
-                'check enemys
-                If enemyList.Count > 0 Then
-                    For Each enemy As EnemyShip In enemyList
-                        If playerShot.Rectangle.IntersectsWith(enemy.Rectangle) Then
-                            Score += enemy.baseScore * enemy.scoreMulti
-                            'remove shot after hit
-                            playerShot.isAlive = False
-                            enemy.explode = True
-                        End If
-                    Next
-                End If
-            Next
-        End If
 
-        If enemyList.Count > 0 Then
-            For Each enemy As EnemyShip In enemyList
-                If enemy.Rectangle.IntersectsWith(player.Rectangle) Then
-                    enemy.explode = True
-                    'TODO
-                    'player.explode
-                    EndGame(EndGameEvent.Collision, enemy)
-                    Exit Sub
-                End If
-                If enemy.X < Box.Left - enemy.Size.Width Then
-                    Score -= enemy.baseScore * enemy.scoreMulti
-                    enemy.isAlive = False
-                End If
-            Next
-        End If
 
         'check POWER UPS
         If powerUps.Count > 0 Then
@@ -145,23 +112,24 @@ Public Class Form1
                         power.isAlive = False
 
                         'separate Power up types
-                        AddAmmo(power.ammoType, 0, power.GetAmmo)
-                        UpdateHudValues("ammo")
+                        AddAmmo(power.ammoType, power.GetAmmo)
                     End If
                 End If
             Next
         End If
         RemoveObjects()
-        qStop = DateAndTime.Now : qTime = qStop - qStart
+
     End Sub
     Private Sub RemoveObjects()
 
         'remove dead enemies
-        For i = 0 To enemyList.Count - 1
-            If enemyList(i).isAlive = False Then
-                enemyList.RemoveAt(i)
-            End If
-        Next
+        If enemyList.Count > 0 Then
+            For i As Integer = enemyList.Count - 1 To 0 Step -1
+                If enemyList(i).isAlive = False Then
+                    enemyList.RemoveAt(i)
+                End If
+            Next
+        End If
 
         'remove collected powerups
         If powerUps.Count > 0 Then
@@ -207,7 +175,7 @@ Public Class Form1
         'TODO
         'Build this to use a TimeSpan within the object
         For Each enemy As EnemyShip In enemyList
-            If enemy.imageName = "saucerSmall" Or enemy.imageName = "saucerBig" Then
+            If enemy.imageName = "SaucerSmall" Or enemy.imageName = "SaucerBig" Then
                 enemy.ChangeDirection()
             End If
         Next

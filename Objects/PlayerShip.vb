@@ -1,42 +1,33 @@
 ﻿Public Class PlayerShip
     Inherits Ship
     Public Sub Shoot()
-        If Not outOfCurrentAmmo Then
-            Select Case selectedAmmo
-                Case AmmoFactory.AmmoType.Bullet
-                    If ammoBulletList.Count <> 0 Then
-                        currentShot = ammoBulletList.Last
-                        ammoBulletList.Remove(ammoBulletList.Last)
-                    Else
-                        '
-                        'remove empty ammo list frmo allAmmo
-                        outOfCurrentAmmo = True
-                        allAmmo.RemoveAt(selectedAmmo)
-                        Exit Sub
-                    End If
-                Case AmmoFactory.AmmoType.BulletBig
-                    If ammoBulletBigList.Count <> 0 Then
-                        currentShot = ammoBulletBigList.Last
-                        ammoBulletBigList.Remove(ammoBulletBigList.Last)
-                    Else
-                        outOfCurrentAmmo = True
-                        allAmmo.RemoveAt(selectedAmmo)
-                        Exit Sub
-                    End If
-                Case Else
-                    outOfCurrentAmmo = True
-            End Select
-            currentShot.Location = OffsetLocation
-            shotList.Add(currentShot)
-            currentShot = Nothing
-        ElseIf ammoAutoSelect Then
-            outText("out of current ammo!")
+        If ammoOrderList.Count = 0 Then Exit Sub
 
-            NextAmmoAvil()
-        End If
-        UpdateHudValues("ammo")
-        currentShot = Nothing
+        Dim attempts As Integer = 0
+
+        While attempts < ammoOrderList.Count
+            Dim ammoType As AmmoFactory.AmmoType = ammoOrderList(selectedIndex)
+            Dim q As Queue(Of Ammo) = allAmmo(ammoType)
+
+            If q.Count > 0 Then
+                Dim shot = q.Dequeue()
+                shot.Location = OffsetLocation
+                shotList.Add(shot)
+                Return
+            End If
+            Debug.Print("Trying Next Ammo")
+            selectedIndex = (selectedIndex + 1) Mod ammoOrderList.Count
+            attempts += 1
+        End While
+
+        Debug.Print("All Ammo Empty")
     End Sub
+    Public Overrides Function CheckAmmo() As Object
+        If allAmmo.Count > 0 Then
+            Return allAmmo(selectedIndex).Count
+        Else Return 0
+        End If
+    End Function
     Public Sub Left()
         leftSpeed = xSpeed * -1
     End Sub

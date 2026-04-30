@@ -38,7 +38,9 @@
             Me.health -= amount
         End If
     End Sub
-    Overrides Sub Move()
 
-    End Sub
+    Overridable Function CheckAmmo()
+        Return Nothing
+    End Function
+
 End Class

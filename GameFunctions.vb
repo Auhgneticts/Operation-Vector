@@ -12,9 +12,9 @@ Module GameFunctions
         Dim Bottom As Integer
         Dim Width As Integer
         Dim Height As Integer
+        Dim Box As Rectangle
     End Structure
-
-    'Private dataPath As String = ""
+    'remove Form Timers
     Friend qTime As TimeSpan
     Friend qStop, qStart As New DateTime
     Friend Const TimeFastExplosionMicro = 75
@@ -25,10 +25,7 @@ Module GameFunctions
     Friend enemyFactory As New EnemyFactory
     Friend enemyList As New List(Of EnemyShip)
     Friend gameBitmaps As New SortedList(Of String, Bitmap)
-    Friend fontScore As New Font(FontFamily.GenericMonospace, 14, FontStyle.Bold)
     Friend drawBounds As Boolean = False
-
-    ''TESTING
     Friend powerUps As List(Of PowerBullet)
 
     Friend DestRect As RectangleF
@@ -38,7 +35,6 @@ Module GameFunctions
 
     Public Sub StartGame()
         StartTimers()
-        UpdateHudValues()
         OutText("Game Started")
     End Sub
     Public Sub PauseGame(Optional message As String = "", Optional title As String = "")
@@ -54,7 +50,7 @@ Module GameFunctions
     End Sub
     Public Sub SetupTimers()
         With Form1
-            .TimerDraw.Interval = 13
+            .TimerDraw.Interval = 14
             'make Varibles
             .TimerSpaceShipDir.Interval = 200
             .TimerEnemySpawn.Interval = 3000
@@ -64,7 +60,7 @@ Module GameFunctions
         With Form1
             .TimerDraw.Start()
             .TimerSpaceShipDir.Start()
-            '.TimerEnemySpawn.Start()
+            .TimerEnemySpawn.Start()
         End With
     End Sub
     Public Sub StopTimers()
@@ -74,15 +70,15 @@ Module GameFunctions
             .TimerEnemySpawn.Stop()
         End With
     End Sub
-    Public Sub EndGame(endEvent As EndGameEvent, Optional ship As Ship = Nothing, Optional enemy As EnemyShip = Nothing, Optional ammoName As String = "")
+    Public Sub EndGame(endEvent As EndGameEvent, Optional playerShip As String = "", Optional enemyName As String = "", Optional ammoName As String = "")
         Select Case endEvent
             Case EndGameEvent.Collision
                 PauseGame()
-                If MsgBox("You hit a " + ship.name, MsgBoxStyle.Critical, "You didn't make it.") = MsgBoxResult.Ok Then
+                If MsgBox("You hit a " + enemyName, MsgBoxStyle.Critical, "You didn't make it.") = MsgBoxResult.Ok Then
                     End
                 End If
             Case EndGameEvent.Shot
-                If MsgBox("Your craft " + ship.name + " was taken down by a " + enemy.name + " using " + ammoName + "s!", MsgBoxStyle.Critical, "We will continue the fight without you.") = MsgBoxResult.Ok Then
+                If MsgBox("Your craft " + playerShip + " was taken down by a " + enemyName + " using " + ammoName + "s!", MsgBoxStyle.Critical, "We will continue the fight without you.") = MsgBoxResult.Ok Then
                     End
                 End If
             Case EndGameEvent.TimeUp
@@ -104,8 +100,9 @@ Module GameFunctions
     Public Sub LoadPlayer()
         With player
             .name = "David"
+            .imageName = "Heli"
             .scale = 2
-            .Size = gameBitmaps("Heli").Size
+            .Size = gameBitmaps(.imageName).Size
             .Location = New PointF(Box.Left + .Size.Width, Box.Bottom \ 2 - .Size.Height)
             .pen = New Pen(Brushes.Yellow) With {
                 .Width = 1}
@@ -114,16 +111,14 @@ Module GameFunctions
             .ySpeed = 16
             .xSpeedMax = 30
             .ySpeedMax = 24
-            .imageName = "heli"
         End With
         OutText("Player Created")
-        ammoBulletList = GetAmmoList(AmmoFactory.AmmoType.Bullet, 20)
-        ammoBulletBigList = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 10)
-        allAmmo.Add(AmmoFactory.AmmoType.Bullet, ammoBulletList)
-        allAmmo.Add(AmmoFactory.AmmoType.BulletBig, ammoBulletBigList)
-        'Select ammo as would GUI
-        ''SELECT BULLET TO SHOOOT on ship
-        AmmoSelect(AmmoFactory.AmmoType.BulletBig)
+        allAmmo(AmmoFactory.AmmoType.Bullet) = GetAmmoList(AmmoFactory.AmmoType.Bullet, 5)
+        allAmmo(AmmoFactory.AmmoType.BulletBig) = GetAmmoList(AmmoFactory.AmmoType.BulletBig, 10)
+        ammoOrderList.Add(AmmoFactory.AmmoType.Bullet)
+        ammoOrderList.Add(AmmoFactory.AmmoType.BulletBig)
+
+        selectedIndex = 0
         OutText("Added Ammo to PLayer Ship")
         'Testing
         ammoAutoSelect = True
@@ -152,16 +147,17 @@ Module GameFunctions
         Next
 
     End Sub
-    Public Sub LoadData()
+    Public Sub LoadWorld()
         'dataPath = My.Application.Info.DirectoryPath + "data"
         globalScale = 2
         'Fix this
         Box.Right = Form1.Right
         Box.Left = Form1.Left
         Box.Top = Form1.Top
-        Box.Bottom = Form1.Bottom - (0.08 * Form1.Height)
+        Box.Bottom = Form1.Bottom
         Box.Width = Form1.Width
         Box.Height = Form1.Height
+        Box.Box = Form1.DisplayRectangle
         OutText("Game Data Loaded")
 
         ''' TESTING
@@ -185,7 +181,7 @@ Module GameFunctions
     End Sub
 
     Public Sub OutText(value As String)
-        Form1.outDebug.AppendText(vbCrLf + value)
+        Debug.Print(value)
     End Sub
 
     Public Function RandomY(size As SizeF) As PointF
@@ -208,22 +204,22 @@ Module GameFunctions
         '''
         '''Where do I put this???
         '''
-        Dim tempAmmoList As New List(Of Ammo)
+        Dim tempAmmoList As New Queue(Of Ammo)
         Select Case type
       ' Small Bullet/Big Bullet
             Case AmmoFactory.AmmoType.Bullet, AmmoFactory.AmmoType.BulletBig
                 For I = 1 To Number
-                    tempAmmoList.Add(GameAmmo.ammoFactory.GetBullet(type))
+                    tempAmmoList.Enqueue(GameAmmo.ammoFactory.GetBullet(type))
                 Next
       ' Rod/Big Rod
             Case AmmoFactory.AmmoType.Rod Or AmmoFactory.AmmoType.RodBig
                 For I = 1 To Number
-                    tempAmmoList.Add(GameAmmo.ammoFactory.GetRod(type))
+                    tempAmmoList.Enqueue(GameAmmo.ammoFactory.GetRod(type))
                 Next
       ' Blue Laser/Green Laser/Red Laser
             Case AmmoFactory.AmmoType.LaserBlue Or AmmoFactory.AmmoType.LaserGreen Or AmmoFactory.AmmoType.LaserRed
                 For I = 1 To Number
-                    'tempAmmoList.Add(Ammo.GetLaser(type))
+                    'tempAmmoList.Enqueue(Ammo.GetLaser(type))
                 Next
             Case Else
                 Return Nothing
@@ -233,34 +229,5 @@ Module GameFunctions
         tempAmmoList = Nothing
         OutText("Created " + Number + " " + tempAmmoList(0).name + "s")
     End Function
-    Public Sub UpdateHudValues(Optional what As String = "")
-        'No params then Itterate through and update ALL Displayable Info
 
-        'Player Data
-        '       get ammo count from player current ammo
-        'Update player ammo, for extern SHOOT to call
-        If what = "ammo" Or what = "" Then
-            Form1.LableAmmoAmount.Text = GetAmmoString()
-        End If
-        'If what = "ammo" Then
-        'Exit Sub
-        'End If
-
-        'Hud Images
-        '       get image from player current ammo
-        If what = "" Then
-            Form1.PicBoxAmmoImage.Image = GetAmmoPwImage()
-        End If
-        'bit.Dispose()
-
-        'Enemy Data
-
-        'World Data
-
-        'Mission Data
-
-        If what <> "" Then
-            OutText("ERROR No need for string " + what + " in UpdateHudValues")
-        End If
-    End Sub
 End Module
